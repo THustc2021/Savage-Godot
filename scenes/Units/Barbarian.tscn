@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://b74pw03oamur1"]
+
+[ext_resource type="Script" path="res://Scripts/Units/base_unit.gd" id="1_joml0"]
+[ext_resource type="Texture2D" uid="uid://bekm3mvc7yo4r" path="res://assets/Units/barbarian.png" id="1_yxkqy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ksh2p"]
+
+[node name="Barbarian" type="Area2D"]
+script = ExtResource("1_joml0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ksh2p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_yxkqy")
