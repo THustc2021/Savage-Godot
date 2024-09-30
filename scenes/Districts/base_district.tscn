@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://drfi0cga0xxux"]
+
+[ext_resource type="Texture2D" uid="uid://pki14daw5bdr" path="res://assets/Districts/spinner_segment.png" id="1_08hsl"]
+[ext_resource type="Script" path="res://Scripts/Districts/base_district.gd" id="1_tpsry"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_peoq5"]
+
+[node name="BaseDistrict" type="Area2D"]
+z_index = 2
+script = ExtResource("1_tpsry")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_08hsl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_peoq5")

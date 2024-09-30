@@ -1,0 +1,26 @@
+
+<item id="STOREHOUSE" image="storehouse.png">
+	<name>仓库</name>
+	<description>储存食物是大多数动物的本能，人类也总是要为将来作考量。</description>
+	<adescription>允许修建仓库</adescription>
+</item>
+<item id="TOOLS" image="tools.png">
+	<name>工具</name>
+	<description>使用工具！这是人类跟大部分其他生物的重要区别。</description>
+	<adescription>允许生产“木制农叉”，“兽衣”</adescription>
+	<ability>
+		<ability_type>allow_weapon_for_faction</ability_type>
+		<ability_target>FORK</ability_target>
+	</ability>
+	<ability>
+		<ability_type>allow_armour_for_faction</ability_type>
+		<ability_target>ANIMALCLOTHING</ability_target>
+	</ability>
+</item>
+<!--
+<item>
+	<name></name>
+	<description></description>
+	<ability></ability>
+</item>
+-->

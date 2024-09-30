@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgo4qmn5w8hil"]
+
+[ext_resource type="PackedScene" uid="uid://dlfume0lho2fy" path="res://scenes/Factions/base_faction.tscn" id="1_brf6p"]
+
+[node name="BaseFaction" instance=ExtResource("1_brf6p")]

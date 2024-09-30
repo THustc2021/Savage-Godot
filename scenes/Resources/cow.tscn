@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://5jvshhx01pb0"]
+
+[ext_resource type="PackedScene" uid="uid://r0b4xaj1o167" path="res://scenes/Resources/base_resource.tscn" id="1_lq5t4"]
+[ext_resource type="Texture2D" uid="uid://lfcwptun8qs3" path="res://assets/Resources/Cow.png" id="2_j17rl"]
+[ext_resource type="Texture2D" uid="uid://cq3fp58e0v85g" path="res://assets/Resources/Cow_Icon.webp" id="2_piht8"]
+
+[node name="BaseResource" instance=ExtResource("1_lq5t4")]
+rname = "牛"
+
+[node name="Sprite" parent="." index="1"]
+texture = ExtResource("2_j17rl")
+
+[node name="Icon" parent="." index="2"]
+texture = ExtResource("2_piht8")
+
+[node name="Sprite2" parent="." index="3"]
+texture = ExtResource("2_j17rl")
+
+[node name="Sprite3" parent="." index="4"]
+texture = ExtResource("2_j17rl")

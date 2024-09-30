@@ -1,0 +1,106 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2rmiscg55e1f"]
+
+[ext_resource type="Script" path="res://Scripts/UIs/CityPanel.gd" id="1_irrsx"]
+[ext_resource type="Texture2D" uid="uid://g527rub16q8r" path="res://assets/UI/pawn_up.png" id="1_jdvbl"]
+[ext_resource type="Texture2D" uid="uid://cqdw2k71bbuly" path="res://assets/UI/book_closed.png" id="2_blgg6"]
+
+[sub_resource type="Animation" id="Animation_gwfdl"]
+resource_name = "button_on_click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RecruitButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-32, -32), Vector2(-106, -106)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RecruitButton:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InfoButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-32, -128)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InfoButton:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xl2ko"]
+_data = {
+"button_on_click": SubResource("Animation_gwfdl")
+}
+
+[node name="CityPanel" type="Control"]
+z_index = 14
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_irrsx")
+
+[node name="RecruitButton" type="TextureButton" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "征集单位"
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("1_jdvbl")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="InfoButton" type="TextureButton" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+tooltip_text = "城市详细信息"
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("2_blgg6")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xl2ko")
+}

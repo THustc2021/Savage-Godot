@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq66t58j6ueo6"]
+
+[ext_resource type="Texture2D" uid="uid://cdncjtywmv5y4" path="res://assets/UI/unit_bg.png" id="1_ms5n0"]
+[ext_resource type="Texture2D" uid="uid://hqq7omqpmul2" path="res://assets/Units/campfire.png" id="2_tv3oj"]
+
+[node name="Icon" type="TextureRect"]
+clip_contents = true
+offset_right = 96.0
+offset_bottom = 96.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_ms5n0")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Sprite2D" type="TextureRect" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_tv3oj")
+expand_mode = 1

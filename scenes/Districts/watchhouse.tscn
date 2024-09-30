@@ -1,0 +1,122 @@
+[gd_scene load_steps=11 format=3 uid="uid://waibcosfyw8y"]
+
+[ext_resource type="Script" path="res://Scripts/Districts/base_city.gd" id="2_4e2mu"]
+[ext_resource type="Texture2D" uid="uid://pki14daw5bdr" path="res://assets/Districts/spinner_segment.png" id="2_8ixbn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0efl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l8ham"]
+bg_color = Color(0.466181, 0.466181, 0.466181, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.732512, 0.763473, 0.906926, 1)
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mhkc"]
+bg_color = Color(0.625597, 0.625597, 0.625597, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.733333, 0.764706, 0.905882, 1)
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(1, 1, 1, 0.6)
+shadow_size = 5
+
+[sub_resource type="Theme" id="Theme_ajso4"]
+default_base_scale = 1.0
+ProgressBar/styles/background = SubResource("StyleBoxFlat_l8ham")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_1mhkc")
+
+[sub_resource type="Animation" id="Animation_hiqj0"]
+resource_name = "button_on_click"
+length = 0.2
+
+[sub_resource type="Animation" id="Animation_cwl1a"]
+resource_name = "rotate_sprite"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jqikv"]
+_data = {
+"button_on_click": SubResource("Animation_hiqj0"),
+"rotate_sprite": SubResource("Animation_cwl1a")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_naw3j"]
+radius = 100.0
+
+[node name="watchhouse" type="Area2D"]
+z_index = 2
+script = ExtResource("2_4e2mu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i0efl")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 100
+explosiveness = 0.5
+randomness = 1.0
+lifetime_randomness = 1.0
+emission_shape = 2
+emission_sphere_radius = 30.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 100.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_max = 15.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8ixbn")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(100, 27)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = 60.0
+offset_right = 50.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 0
+tooltip_text = "城邦转换进程"
+theme = SubResource("Theme_ajso4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_jqikv")
+}
+
+[node name="View" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="View"]
+shape = SubResource("CircleShape2D_naw3j")

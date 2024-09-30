@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dgi601aeyocyt"]
+
+[node name="PopupWindow" type="ConfirmationDialog"]
+title = "确定要这么做吗？"
+initial_position = 2
+size = Vector2i(500, 200)
+visible = true
+exclusive = false
+unresizable = true
+ok_button_text = "执行！"
+dialog_autowrap = true
+cancel_button_text = "放弃"

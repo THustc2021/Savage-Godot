@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cuoywoawjs3vv"]
+
+[ext_resource type="PackedScene" uid="uid://r0b4xaj1o167" path="res://scenes/Resources/base_resource.tscn" id="1_a712q"]
+[ext_resource type="Texture2D" uid="uid://tmxnkukbvggp" path="res://assets/Resources/Sheep.png" id="2_dwdwf"]
+[ext_resource type="Texture2D" uid="uid://dmhc8so6lbxe1" path="res://assets/Resources/Sheep_Icon.webp" id="3_8nkrn"]
+
+[node name="BaseResource" instance=ExtResource("1_a712q")]
+rname = "羊"
+
+[node name="Sprite" parent="." index="1"]
+texture = ExtResource("2_dwdwf")
+
+[node name="Icon" parent="." index="2"]
+texture = ExtResource("3_8nkrn")
+
+[node name="Sprite2" parent="." index="3"]
+texture = ExtResource("2_dwdwf")
+
+[node name="Sprite3" parent="." index="4"]
+texture = ExtResource("2_dwdwf")

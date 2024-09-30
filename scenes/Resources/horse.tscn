@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgef3ayfvq4is"]
+
+[ext_resource type="PackedScene" uid="uid://r0b4xaj1o167" path="res://scenes/Resources/base_resource.tscn" id="1_wxsfx"]
+[ext_resource type="Texture2D" uid="uid://durd13nmja8ki" path="res://assets/Resources/Horse_Icon.webp" id="3_fer0y"]
+[ext_resource type="Texture2D" uid="uid://dxle4jg06mwx" path="res://assets/Resources/Horse.png" id="4_ljmp4"]
+
+[node name="BaseResource" instance=ExtResource("1_wxsfx")]
+
+[node name="Sprite" parent="." index="1"]
+texture = ExtResource("4_ljmp4")
+
+[node name="Icon" parent="." index="2"]
+texture = ExtResource("3_fer0y")
+
+[node name="Sprite2" parent="." index="3"]
+texture = ExtResource("4_ljmp4")
+
+[node name="Sprite3" parent="." index="4"]
+texture = ExtResource("4_ljmp4")

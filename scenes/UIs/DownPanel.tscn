@@ -1,0 +1,168 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxi36udc2i2fa"]
+
+[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_0enxw"]
+[ext_resource type="Script" path="res://Scripts/Utils/DownPanel.gd" id="2_0v0fy"]
+[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_nkfcv"]
+
+[sub_resource type="Theme" id="Theme_fgcap"]
+HBoxContainer/constants/separation = 16
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/font_sizes/font_size = 16
+VBoxContainer/constants/separation = 16
+
+[node name="DownPanel" type="Panel"]
+anchors_preset = -1
+anchor_left = 0.073
+anchor_top = 0.451
+anchor_right = 0.927
+anchor_bottom = 0.567
+offset_left = 0.799988
+offset_top = 1.03491
+offset_right = -0.800049
+offset_bottom = 0.0949707
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+theme = SubResource("Theme_fgcap")
+theme_override_styles/panel = ExtResource("1_0enxw")
+script = ExtResource("2_0v0fy")
+
+[node name="Upper" type="HBoxContainer" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(224, 56)
+layout_mode = 0
+offset_left = 12.0
+offset_top = -64.0
+offset_right = 236.0
+offset_bottom = -8.0
+theme_override_constants/separation = 8
+
+[node name="CollectButton" type="TextureButton" parent="Upper"]
+clip_contents = true
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+tooltip_text = "采集"
+toggle_mode = true
+keep_pressed_outside = true
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="GarrisonButton" type="TextureButton" parent="Upper"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+tooltip_text = "驻扎"
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Outer" type="HBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.125
+anchor_right = 0.999
+anchor_bottom = 0.949
+offset_top = -20.0
+offset_right = 2.04785
+offset_bottom = -0.944016
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Panel" type="Panel" parent="Outer"]
+clip_contents = true
+custom_minimum_size = Vector2(224, 192)
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+
+[node name="Inner" type="VBoxContainer" parent="Outer/Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(224, 230)
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.065
+offset_bottom = -14.95
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Basic" type="HBoxContainer" parent="Outer/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 0
+
+[node name="CommanderName" type="Label" parent="Outer/Panel/Inner/Basic"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.999965, 0.668825, 0.616958, 1)
+theme_override_colors/font_shadow_color = Color(0.830335, 0.830335, 0.830335, 1)
+theme_override_font_sizes/font_size = 24
+text = "单位"
+
+[node name="State" type="Label" parent="Outer/Panel/Inner/Basic"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="MovementPoint" type="Label" parent="Outer/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Supplement" type="HBoxContainer" parent="Outer/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Outer/Panel/Inner/Supplement"]
+layout_mode = 2
+text = "补给："
+
+[node name="ProgressBar" type="ProgressBar" parent="Outer/Panel/Inner/Supplement"]
+custom_minimum_size = Vector2(112, 32)
+layout_mode = 2
+
+[node name="Numer" type="HBoxContainer" parent="Outer/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Outer/Panel/Inner/Numer"]
+layout_mode = 2
+text = "人数："
+
+[node name="ProgressBar" type="ProgressBar" parent="Outer/Panel/Inner/Numer"]
+custom_minimum_size = Vector2(112, 32)
+layout_mode = 2
+
+[node name="Analyse" type="TextureButton" parent="Outer/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "分析当前部队"
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("3_nkfcv")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitPanel" type="Panel" parent="Outer"]
+clip_contents = true
+custom_minimum_size = Vector2(1728, 192)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 7.0
+
+[node name="BaseUnits" type="HBoxContainer" parent="Outer/UnitPanel"]
+clip_contents = true
+custom_minimum_size = Vector2(1728, 230)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

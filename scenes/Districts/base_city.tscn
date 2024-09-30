@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://2rak8r23uc0a"]
+
+[ext_resource type="Script" path="res://Scripts/Districts/base_city.gd" id="1_1qd34"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0efl"]
+
+[node name="BaseCity" type="StaticBody2D"]
+z_index = 2
+input_pickable = true
+script = ExtResource("1_1qd34")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i0efl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

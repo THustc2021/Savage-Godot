@@ -1,0 +1,356 @@
+[gd_scene load_steps=11 format=3 uid="uid://dx6imb1e4nuho"]
+
+[ext_resource type="Script" path="res://Scripts/Units/RaiseUnit.gd" id="1_yssal"]
+[ext_resource type="Script" path="res://Scripts/Units/PortraitItem.gd" id="2_6p1nl"]
+[ext_resource type="Texture2D" uid="uid://clhlgc5y62dx0" path="res://assets/UI/arrow_right.png" id="2_7liik"]
+[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="4_qylx7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sbpir"]
+bg_color = Color(0.629675, 0.629675, 0.629675, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_trgok"]
+font_color = Color(0.52549, 1, 0.419608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajgbx"]
+bg_color = Color(0.364706, 0.364706, 0.364706, 1)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="ImageTexture" id="ImageTexture_6iaes"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gswv7"]
+bg_color = Color(0.364706, 0.364706, 0.364706, 0.0745098)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpe3j"]
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[node name="RaiseUnit" type="ConfirmationDialog"]
+title = "设置您的单位"
+initial_position = 2
+size = Vector2i(1120, 657)
+visible = true
+unresizable = true
+ok_button_text = "执行！"
+cancel_button_text = "放弃"
+script = ExtResource("1_yssal")
+
+[node name="Outer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(988, 350)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -552.0
+offset_top = -320.5
+offset_right = 552.0
+offset_bottom = 279.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Main" type="VBoxContainer" parent="Outer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="Outer/Main"]
+layout_mode = 2
+text = "可供选择的单位："
+
+[node name="Panel" type="Panel" parent="Outer/Main"]
+custom_minimum_size = Vector2(480, 160)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_sbpir")
+
+[node name="UnitType" type="HBoxContainer" parent="Outer/Main/Panel"]
+custom_minimum_size = Vector2(460, 150)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -75.0
+offset_right = 230.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 16
+
+[node name="Numset" type="HSplitContainer" parent="Outer/Main"]
+layout_mode = 2
+
+[node name="Select" type="HBoxContainer" parent="Outer/Main/Numset"]
+layout_mode = 2
+
+[node name="SelectLabel" type="Label" parent="Outer/Main/Numset/Select"]
+custom_minimum_size = Vector2(40, 23)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "当前选中："
+
+[node name="SelectType" type="Label" parent="Outer/Main/Numset/Select"]
+clip_contents = true
+custom_minimum_size = Vector2(40, 23)
+layout_mode = 2
+size_flags_horizontal = 0
+label_settings = SubResource("LabelSettings_trgok")
+
+[node name="Number" type="HBoxContainer" parent="Outer/Main/Numset"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="Outer/Main/Numset/Number"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "数量："
+
+[node name="TextEdit" type="LineEdit" parent="Outer/Main/Numset/Number"]
+custom_minimum_size = Vector2(40, 23)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+context_menu_enabled = false
+
+[node name="HSlider" type="HSlider" parent="Outer/Main"]
+layout_mode = 2
+size_flags_vertical = 8
+ticks_on_borders = true
+
+[node name="UnitTools" type="HBoxContainer" parent="Outer/Main"]
+custom_minimum_size = Vector2(448, 200)
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="PortraitItem" type="Panel" parent="Outer/Main/UnitTools"]
+custom_minimum_size = Vector2(96, 160)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_ajgbx")
+
+[node name="Portrait" type="TextureButton" parent="Outer/Main/UnitTools/PortraitItem"]
+custom_minimum_size = Vector2(72, 144)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Weapon" type="TextureRect" parent="Outer/Main/UnitTools/PortraitItem/Portrait"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -55.0
+offset_right = 15.0
+offset_bottom = -25.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("ImageTexture_6iaes")
+
+[node name="Armour" type="TextureRect" parent="Outer/Main/UnitTools/PortraitItem/Portrait"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = 15.0
+offset_right = 15.0
+offset_bottom = 45.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Vehicle" type="TextureRect" parent="Outer/Main/UnitTools/PortraitItem/Portrait"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -26.0
+offset_right = 15.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Mask" type="Panel" parent="Outer/Main/UnitTools/PortraitItem"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_6p1nl")
+
+[node name="Weapons" type="VBoxContainer" parent="Outer/Main/UnitTools"]
+custom_minimum_size = Vector2(96, 200)
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="Outer/Main/UnitTools/Weapons"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "可选武器"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="Outer/Main/UnitTools/Weapons"]
+custom_minimum_size = Vector2(96, 160)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_gswv7")
+
+[node name="GridContainer" type="GridContainer" parent="Outer/Main/UnitTools/Weapons/Panel"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="Armours" type="VBoxContainer" parent="Outer/Main/UnitTools"]
+custom_minimum_size = Vector2(96, 200)
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="Outer/Main/UnitTools/Armours"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "可选防具"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="Outer/Main/UnitTools/Armours"]
+custom_minimum_size = Vector2(96, 160)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_gswv7")
+
+[node name="GridContainer" type="GridContainer" parent="Outer/Main/UnitTools/Armours/Panel"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="Vehicles" type="VBoxContainer" parent="Outer/Main/UnitTools"]
+custom_minimum_size = Vector2(96, 200)
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="Outer/Main/UnitTools/Vehicles"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "可选载具"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="Outer/Main/UnitTools/Vehicles"]
+custom_minimum_size = Vector2(96, 160)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_gswv7")
+
+[node name="GridContainer" type="GridContainer" parent="Outer/Main/UnitTools/Vehicles/Panel"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="Arrow" type="TextureRect" parent="Outer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_7liik")
+expand_mode = 2
+
+[node name="Result" type="Panel" parent="Outer"]
+custom_minimum_size = Vector2(416, 600)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Main" type="VBoxContainer" parent="Outer/Result"]
+custom_minimum_size = Vector2(388, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -194.0
+offset_top = -148.0
+offset_right = 194.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="General" type="PanelContainer" parent="Outer/Result/Main"]
+custom_minimum_size = Vector2(384, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="Outer/Result/Main/General"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "将军"
+
+[node name="Label" type="Label" parent="Outer/Result/Main"]
+layout_mode = 2
+text = "准备出征："
+
+[node name="Units" type="ScrollContainer" parent="Outer/Result/Main"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Panel" type="Panel" parent="Outer/Result/Main/Units"]
+custom_minimum_size = Vector2(380, 150)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wpe3j")
+
+[node name="UnitsMain" type="HBoxContainer" parent="Outer/Result/Main/Units/Panel"]
+custom_minimum_size = Vector2(380, 150)
+layout_mode = 2
+offset_right = 380.0
+offset_bottom = 150.0
+
+[node name="Analysis" type="TextureButton" parent="Outer/Result/Main"]
+custom_minimum_size = Vector2(196, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_qylx7")
+ignore_texture_size = true
+stretch_mode = 0

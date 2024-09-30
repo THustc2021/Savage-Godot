@@ -1,0 +1,160 @@
+[gd_scene load_steps=6 format=3 uid="uid://d4heo36ii58iq"]
+
+[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_qgu7u"]
+[ext_resource type="Script" path="res://Scripts/UIs/FactionPanel.gd" id="2_0f1ti"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4is7r"]
+font_size = 24
+
+[sub_resource type="Animation" id="Animation_yijen"]
+resource_name = "LeftPanel_movein"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FactionPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-448, 224), Vector2(32, 224)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dbic6"]
+_data = {
+"LeftPanel_movein": SubResource("Animation_yijen")
+}
+
+[node name="FactionPanel" type="Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(380, 512)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1168.0
+offset_top = -416.0
+offset_right = -788.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_qgu7u")
+script = ExtResource("2_0f1ti")
+
+[node name="Vcontainer" type="VBoxContainer" parent="."]
+use_parent_material = true
+clip_contents = true
+custom_minimum_size = Vector2(362, 494)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -159.0
+offset_top = -247.0
+offset_right = 159.0
+offset_bottom = 247.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="FactionName" type="Label" parent="Vcontainer"]
+clip_contents = true
+layout_mode = 2
+text = "国家名称"
+label_settings = SubResource("LabelSettings_4is7r")
+horizontal_alignment = 1
+
+[node name="BaseInfo" type="HBoxContainer" parent="Vcontainer"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GovermentType" type="HBoxContainer" parent="Vcontainer/BaseInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/BaseInfo/GovermentType"]
+layout_mode = 2
+text = "政体类型："
+
+[node name="Value" type="Label" parent="Vcontainer/BaseInfo/GovermentType"]
+layout_mode = 2
+
+[node name="UnitNum" type="HBoxContainer" parent="Vcontainer/BaseInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/BaseInfo/UnitNum"]
+layout_mode = 2
+text = "单位数量："
+
+[node name="Value" type="Label" parent="Vcontainer/BaseInfo/UnitNum"]
+layout_mode = 2
+
+[node name="CityNum" type="HBoxContainer" parent="Vcontainer/BaseInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/BaseInfo/CityNum"]
+layout_mode = 2
+text = "城市数量："
+
+[node name="Value" type="Label" parent="Vcontainer/BaseInfo/CityNum"]
+layout_mode = 2
+
+[node name="Transfer" type="HBoxContainer" parent="Vcontainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/Transfer"]
+layout_mode = 2
+text = "城邦转化点数："
+
+[node name="TransferTime" type="Label" parent="Vcontainer/Transfer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Vcontainer/Transfer"]
+layout_mode = 2
+text = "/100"
+
+[node name="Properties" type="VBoxContainer" parent="Vcontainer"]
+layout_mode = 2
+
+[node name="Aggressiveness" type="HBoxContainer" parent="Vcontainer/Properties"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/Properties/Aggressiveness"]
+layout_mode = 2
+text = "侵略性："
+
+[node name="Label2" type="Label" parent="Vcontainer/Properties/Aggressiveness"]
+layout_mode = 2
+
+[node name="Exploration" type="HBoxContainer" parent="Vcontainer/Properties"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/Properties/Exploration"]
+layout_mode = 2
+text = "探索精神："
+
+[node name="Label2" type="Label" parent="Vcontainer/Properties/Exploration"]
+layout_mode = 2
+
+[node name="Peacelover" type="HBoxContainer" parent="Vcontainer/Properties"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Vcontainer/Properties/Peacelover"]
+layout_mode = 2
+text = "热爱和平："
+
+[node name="Label2" type="Label" parent="Vcontainer/Properties/Peacelover"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_dbic6")
+}

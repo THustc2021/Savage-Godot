@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://n2kq60a3d7ul"]
+
+[ext_resource type="Script" path="res://Scripts/UIs/EventNote.gd" id="1_76dcj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sy1ka"]
+size = Vector2(100, 100)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqcvn"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.698039, 0.631373, 0.384314, 0.901961)
+border_width_left = 5
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+
+[sub_resource type="LabelSettings" id="LabelSettings_xv8f0"]
+font_size = 18
+
+[node name="EventNote" type="RigidBody2D"]
+position = Vector2(50, 50)
+collision_layer = 2
+collision_mask = 2
+input_pickable = true
+mass = 0.01
+can_sleep = false
+lock_rotation = true
+script = ExtResource("1_76dcj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sy1ka")
+
+[node name="Sprite2D" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+expand_mode = 1
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+z_index = 13
+custom_minimum_size = Vector2(150, 50)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -25.0
+offset_right = -50.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqcvn")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_xv8f0")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

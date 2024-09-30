@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck8jrkr80wc2j"]
+
+[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_ltrro"]
+[ext_resource type="Script" path="res://Scripts/UIs/RadarMap.gd" id="2_mi344"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_epvhd"]
+font_size = 32
+outline_size = 1
+
+[node name="UnitAnalysis" type="Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(880, 512)
+offset_left = 1200.0
+offset_top = 200.0
+offset_right = 2000.0
+offset_bottom = 700.0
+theme_override_styles/panel = ExtResource("1_ltrro")
+
+[node name="Main" type="VBoxContainer" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(860, 488)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -392.0
+offset_top = -242.0
+offset_right = 392.0
+offset_bottom = 242.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Main"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "单位战力分析"
+label_settings = SubResource("LabelSettings_epvhd")
+
+[node name="Content" type="HBoxContainer" parent="Main"]
+clip_contents = true
+custom_minimum_size = Vector2(860, 448)
+layout_mode = 2
+
+[node name="BaseInfo" type="VBoxContainer" parent="Main/Content"]
+clip_contents = true
+custom_minimum_size = Vector2(224, 430)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Main/Content"]
+clip_contents = true
+custom_minimum_size = Vector2(612, 430)
+layout_mode = 2
+
+[node name="RadarMapAttack" type="Node2D" parent="Main/Content/PanelContainer"]
+script = ExtResource("2_mi344")
+
+[node name="RadarMapDefend" type="Node2D" parent="Main/Content/PanelContainer"]
+position = Vector2(312, 0)
+script = ExtResource("2_mi344")

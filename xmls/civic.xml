@@ -1,0 +1,22 @@
+
+<item id="COMMUNAL_SOCIETY" image="communal_society.png">
+	<name>群居社会</name>
+	<description>单个人类的力量很弱小。为了能在自然界中活下来，人类形成了群居社会。</description>
+	<adescription>允许招募部落民</adescription>
+	<ability>
+		<ability_type>allow_recruit_base_unit_for_faction</ability_type>
+		<ability_target>TRIBESMAN</ability_target>
+	</ability>
+</item>
+<item id="COOPERATION" image="cooperation.png">
+	<name>合作</name>
+	<description>人们对合作的认识进一步提升！一个坚强的集体使得我们能够战胜那些看起来比我们更加强大的怪物。</description>
+	<adescription>单位征集上限+1</adescription>
+</item>
+<!--
+<item>
+	<name></name>
+	<description></description>
+	<ability></ability>
+</item>
+-->

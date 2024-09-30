@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bdlc4wcklodm7"]
+
+[node name="PopupWindow" type="AcceptDialog"]
+title = "事件产生"
+initial_position = 2
+size = Vector2i(500, 256)
+visible = true
+exclusive = false
+unresizable = true
+ok_button_text = "确认"
+dialog_autowrap = true
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 492.0
+offset_bottom = 207.0

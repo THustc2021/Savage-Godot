@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1niv3xxjac65"]
+
+[ext_resource type="Texture2D" uid="uid://tgf321mjva54" path="res://assets/UI/hlcell.png" id="1_4dguc"]
+
+[node name="HlCell" type="Sprite2D"]
+texture = ExtResource("1_4dguc")
