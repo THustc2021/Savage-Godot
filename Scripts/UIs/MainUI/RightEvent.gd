@@ -5,7 +5,7 @@ var event_list_tmp := []
 var MAX_SHOW_NUM = 10
 var current_show_num = 0
 
-var item_scene = preload("res://scenes/UIs/EventNote.tscn")
+var item_scene = preload("res://scenes/UIs/MainUI/EventNote.tscn")
 
 func show_event(event_item):
 	if current_show_num < MAX_SHOW_NUM:

@@ -1,8 +1,6 @@
-extends Node
-
 class_name Set
 
-@onready var data
+var data
 var current = 0
 
 func _init(l=null):

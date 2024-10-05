@@ -27,21 +27,41 @@ var current_movement_point
 var current_supplement
 var current_total_soldiers_num := 0
 var current_unit_list := []
+var current_in_city :bool 	# 是否是城市驻军
 
-var attack_non_declare_confirmed_scene = preload("res://scenes/UIs/PopupWindow.tscn")
+var attack_non_declare_confirmed_scene = preload("res://scenes/UIs/PopUpwindows/PopupWindow.tscn")
 var attack_non_declare_confirmed
 
-func setup(tilepos, base_units, faction, general=null):
+func _add_to_portrait(n):
+	$"Portrait".add_child(n)
+	
+func setup(base_units, faction, tilepos=null, is_garrison_unit=false, general=null):
 	tilemap = GlobalConfig.tilemap
-	# 设置位置属性
-	tile_position = tilepos
-	position = tilemap.map_to_local(tilepos)
-	faction.register_unit(self)
+	# 设置位置属性（未必会有）
+	if tilepos != null:	# 只是用作测试，未加入到场景，这种情况下不应该注册
+		tile_position = tilepos
+		position = tilemap.map_to_local(tilepos)
+		faction.register_unit(self)
+	if is_garrison_unit:
+		current_in_city = true
+		# 禁用碰撞
+		collision_layer = 0
+		collision_mask = 0
 	# 设置指挥者
 	if general == null:
 		self.commander = load("res://Scripts/Units/Generals/base_general.gd").new()
 	else:
 		self.commander = general
+	self.commander.icon.set_anchors_preset(Control.PRESET_CENTER)
+	_add_to_portrait(self.commander.icon)
+	var st
+	var n = self.commander.general_level
+	for gi in range(0, n):
+		st = TextureRect.new()
+		st.texture = star_icon
+		st.position = Vector2(30+20*(gi-n/2), -20+(gi-n/2)*(gi-n/2))
+		st.scale = Vector2(32, 32) / st.texture.get_size()
+		_add_to_portrait(st)
 	# 设置初始状态
 	self.current_state = GlobalConfig.UNIT_STATE.IDLE
 	# 设置当前补给数量（应当从国家仓库中扣除）
@@ -51,38 +71,37 @@ func setup(tilepos, base_units, faction, general=null):
 	var sw
 	var sa
 	var sv
-	var n = len(self.current_unit_list)
+	n = len(self.current_unit_list)
 	for ui in range(0, n):
 		var u = self.current_unit_list[ui]
 		self.max_total_soldiers_num += u.max_num
 		self.current_total_soldiers_num += u.current_num
 		# 设置初始肖像
-		sw = Sprite2D.new()
 		if u.weapon_id != null:
+			sw = TextureRect.new()
 			sw.texture = load(GlobalConfig.weapons[u.weapon_id]["icon"])
-			sw.position = Vector2(-50*(ui-n/2)/n, -30)
-			sw.scale = Vector2(32, 32) / sw.texture.get_size()
-			$"Background".add_child(sw)
+			sw.pivot_offset = Vector2(16, 16)
+			sw.position = Vector2(30+4*(ui-n/2), 5)
+			sw.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			sw.stretch_mode = TextureRect.STRETCH_SCALE
+			sw.size = Vector2(32, 32)
+			_add_to_portrait(sw)
 		if u.armour_id != null:
-			sa = Sprite2D.new()
+			sa = TextureRect.new()
 			sa.texture = load(GlobalConfig.armours[u.armour_id]["icon"])
-			sa.position = Vector2(-50*(ui-n/2)/n, 0)
-			sa.scale = Vector2(32, 32) / sa.texture.get_size()
-			$"Background".add_child(sa)
+			sa.position = Vector2(30+4*(ui-n/2), 30)
+			sa.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			sa.stretch_mode = TextureRect.STRETCH_SCALE
+			sa.size = Vector2(32, 32)
+			_add_to_portrait(sa)
 		if u.vehicle_id != null:	# 如果存在载具
-			sv = Sprite2D.new()
+			sv = TextureRect.new()
 			sv.texture = load(GlobalConfig.vehicles[u.vehicle_id]["icon"])
-			sv.position = Vector2(-50*(ui-n/2)/n, 30)
-			sv.scale = Vector2(32, 32) / sv.texture.get_size()
-			$"Background".add_child(sv)
-	var st
-	n = self.commander.general_level
-	for gi in range(0, n):
-		st = Sprite2D.new()
-		st.texture = star_icon
-		st.position = Vector2(-80*(gi-n/2)/n, -60+(gi-n/2)*(gi-n/2))
-		st.scale = Vector2(32, 32) / st.texture.get_size()
-		$"Background".add_child(st)
+			sv.position = Vector2(30+4*(ui-n/2), 55)
+			sv.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			sv.stretch_mode = TextureRect.STRETCH_SCALE
+			sv.size = Vector2(32, 32)
+			_add_to_portrait(sv)
 	# 设置滑动条
 	$SupplyBar.value = self.current_supplement
 	$NumberBar.max_value = self.max_total_soldiers_num
@@ -105,11 +124,17 @@ func _record_known(obj):
 			belonged_faction.astar.update_position(obj.tile_position, AStar.MAX_MOVEMENT_COST)
 
 func register_faction(faction):
-	$"Background".self_modulate = faction.faction_color
+	$"Portrait".self_modulate = faction.faction_color
 	self.belonged_faction = faction
 	
 func on_turn_begin():
 	self.current_movement_point = movement_point
+
+func analyse_unit_strength():	# 评估单位战斗力
+	var sd_anti = []	# "普通近战单位", "对抗骑兵单位", "远程攻击单位", "骑兵单位", "攻城单位", "防御设施"
+	var sd_defe = []	# 各项单位自身的战力，上面是对抗这些单位时的战力
+	for bu in current_unit_list:
+		pass
 
 # 修改坐标后建立寻路列表
 func prepare_move(clicked_tile):
@@ -145,8 +170,8 @@ func move():
 		last_no_collide = tile_position	# 如果发生了耗尽的碰撞，回溯到这个位置
 
 func _physics_process(delta):	
-	if tile_position in GlobalConfig.factionManager.player_faction.view_manager.view_highlight_tile_list or \
-		not GlobalConfig.allow_fog_of_war:
+	if not current_in_city and (tile_position in GlobalConfig.factionManager.player_faction.view_manager.view_highlight_tile_list or \
+		not GlobalConfig.allow_fog_of_war):
 		visible = true
 	else:
 		visible = false
@@ -223,10 +248,10 @@ func _physics_process(delta):
 				GlobalConfig.show_view()
 			# 
 
-func _input_event(_viewport, event, _shape_idx):
+func _input_event(viewport, event, shape_idx):
 	if self.belonged_faction.is_player_faction:
 		if event is InputEventMouseButton and event.is_pressed():
-			if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.button_index == MOUSE_BUTTON_LEFT and not GlobalConfig.clicked_under_unit:
 				GlobalConfig.select_unit(self)
 				self.modulate.a = 0.5
 				# 高亮可移动区域

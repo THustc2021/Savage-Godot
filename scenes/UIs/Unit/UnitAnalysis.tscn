@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ck8jrkr80wc2j"]
+[gd_scene load_steps=5 format=3 uid="uid://ck8jrkr80wc2j"]
 
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_ltrro"]
-[ext_resource type="Script" path="res://Scripts/UIs/RadarMap.gd" id="2_mi344"]
+[ext_resource type="Script" path="res://Scripts/UIs/Unit/UnitAnalysis.gd" id="2_bh4ws"]
+[ext_resource type="Script" path="res://Scripts/UIs/Utils/RadarMap.gd" id="2_mi344"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_epvhd"]
 font_size = 32
@@ -15,6 +16,7 @@ offset_top = 200.0
 offset_right = 2000.0
 offset_bottom = 700.0
 theme_override_styles/panel = ExtResource("1_ltrro")
+script = ExtResource("2_bh4ws")
 
 [node name="Main" type="VBoxContainer" parent="."]
 clip_contents = true

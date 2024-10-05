@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-var window_scene = preload("res://scenes/UIs/PopupWindow_nochoice.tscn")
+var window_scene = preload("res://scenes/UIs/PopUpwindows/PopupWindow_nochoice.tscn")
 var event_id
 var event_args
 

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxaqrnxy8mnl1"]
+
+[ext_resource type="Script" path="res://Scripts/Icons/general_icon.gd" id="1_ge1yh"]
+
+[node name="GeneralIcon" type="TextureRect"]
+script = ExtResource("1_ge1yh")

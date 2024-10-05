@@ -1,6 +1,6 @@
 extends Panel
 
-var item_scene = preload("res://scenes/UIs/Technology_Item.tscn")
+var item_scene = preload("res://scenes/UIs/TechAndCiv/Technology_Item.tscn")
 
 func _ready():
 	# 显示

@@ -3,8 +3,6 @@ extends Area2D
 @onready var tilemap
 
 var tile_position := Vector2i()
-
-@onready var icon = $"Sprite2D"
 var belonged_faction
 
 var city_name = "蛮族哨所"
@@ -16,10 +14,12 @@ var avail_weapon := []
 var avail_armour := []
 var avail_vehicle := []
 
-var city_panel_scene = preload("res://scenes/UIs/CityPanel.tscn")
+var city_panel_scene = preload("res://scenes/UIs/City/CityPanel.tscn")
 var city_panel
-var city_recruit_scene = preload("res://scenes/Units/RaiseUnit.tscn")
+var city_recruit_scene = preload("res://scenes/UIS/Unit/RaiseUnit.tscn")
 var city_recruit_window
+
+var garrison_unit := []	# 该城市的驻军
 
 func setup(tilepos, faction):
 	self.tilemap = GlobalConfig.tilemap
@@ -28,7 +28,7 @@ func setup(tilepos, faction):
 	self.position = tilemap.map_to_local(tilepos)
 	faction.register_city(self)
 	# 设置碰撞体检测大小
-	var srect = $"Sprite2D".get_rect().size
+	var srect = $"Portrait".get_rect().size
 	$"CollisionShape2D".shape.size = Vector2i(srect)
 	# 循环播放
 	$"AnimationPlayer".play("rotate_sprite")
@@ -58,12 +58,14 @@ func recruit_unit():	# 在此城征集单位
 func _input_event(_viewport, event, _shape_idx):
 	if self.belonged_faction.is_player_faction:	# 仅有玩家支持以下动画
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-			if not has_overlapping_bodies():
+			if not has_overlapping_bodies() or GlobalConfig.clicked_under_unit:
 				GlobalConfig.select_city(self)
 				if city_panel == null:
 					city_panel = city_panel_scene.instantiate()
 					add_child(city_panel)
-		
+				if len(garrison_unit) > 0:
+					# 展示驻扎于城市的军队
+					GlobalConfig.show_city_garrisoned(self)
 func unselected():
 	if city_panel != null:
 		remove_child(city_panel)

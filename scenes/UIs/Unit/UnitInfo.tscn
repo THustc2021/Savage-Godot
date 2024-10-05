@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cxi36udc2i2fa"]
+[gd_scene load_steps=8 format=3 uid="uid://cxi36udc2i2fa"]
 
-[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_0enxw"]
-[ext_resource type="Script" path="res://Scripts/Utils/DownPanel.gd" id="2_0v0fy"]
-[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_nkfcv"]
+[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_5tv7s"]
+[ext_resource type="Script" path="res://Scripts/UIs/Unit/UnitInfoPanel.gd" id="2_pl8qk"]
+[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_dsn51"]
+[ext_resource type="Texture2D" uid="uid://dfwkqqb4bkjr6" path="res://assets/UI/Collect.png" id="3_lqfgd"]
+[ext_resource type="Texture2D" uid="uid://478gds0ugqsb" path="res://assets/UI/Collect_pressed.png" id="4_3vpby"]
+[ext_resource type="Texture2D" uid="uid://duulk5fhdon7j" path="res://assets/UI/Garrison.png" id="5_p07gl"]
 
 [sub_resource type="Theme" id="Theme_fgcap"]
 HBoxContainer/constants/separation = 16
@@ -11,27 +14,26 @@ Label/colors/font_shadow_color = Color(0, 0, 0, 0)
 Label/font_sizes/font_size = 16
 VBoxContainer/constants/separation = 16
 
-[node name="DownPanel" type="Panel"]
-anchors_preset = -1
-anchor_left = 0.073
-anchor_top = 0.451
-anchor_right = 0.927
-anchor_bottom = 0.567
-offset_left = 0.799988
-offset_top = 1.03491
-offset_right = -0.800049
-offset_bottom = 0.0949707
+[node name="UnitInfoPanel" type="Panel"]
+custom_minimum_size = Vector2(2000, 288)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 mouse_filter = 1
 theme = SubResource("Theme_fgcap")
-theme_override_styles/panel = ExtResource("1_0enxw")
-script = ExtResource("2_0v0fy")
+theme_override_styles/panel = ExtResource("1_5tv7s")
+script = ExtResource("2_pl8qk")
 
 [node name="Upper" type="HBoxContainer" parent="."]
 clip_contents = true
 custom_minimum_size = Vector2(224, 56)
-layout_mode = 0
+layout_mode = 1
 offset_left = 12.0
 offset_top = -64.0
 offset_right = 236.0
@@ -45,6 +47,8 @@ layout_mode = 2
 tooltip_text = "采集"
 toggle_mode = true
 keep_pressed_outside = true
+texture_normal = ExtResource("3_lqfgd")
+texture_pressed = ExtResource("4_3vpby")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -52,19 +56,24 @@ stretch_mode = 0
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 tooltip_text = "驻扎"
+texture_normal = ExtResource("5_p07gl")
+texture_pressed = ExtResource("5_p07gl")
 ignore_texture_size = true
 stretch_mode = 0
 
 [node name="Outer" type="HBoxContainer" parent="."]
 clip_contents = true
+custom_minimum_size = Vector2(1968, 256)
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.125
-anchor_right = 0.999
-anchor_bottom = 0.949
-offset_top = -20.0
-offset_right = 2.04785
-offset_bottom = -0.944016
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -984.0
+offset_top = -128.0
+offset_right = 984.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -98,7 +107,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.999965, 0.668825, 0.616958, 1)
 theme_override_colors/font_shadow_color = Color(0.830335, 0.830335, 0.830335, 1)
 theme_override_font_sizes/font_size = 24
-text = "单位"
+text = "将军"
 
 [node name="State" type="Label" parent="Outer/Panel/Inner/Basic"]
 clip_contents = true
@@ -146,23 +155,24 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "分析当前部队"
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("3_nkfcv")
+texture_normal = ExtResource("3_dsn51")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="UnitPanel" type="Panel" parent="Outer"]
+[node name="UnitPanel" type="PanelContainer" parent="Outer"]
 clip_contents = true
 custom_minimum_size = Vector2(1728, 192)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_stretch_ratio = 7.0
 
-[node name="BaseUnits" type="HBoxContainer" parent="Outer/UnitPanel"]
-clip_contents = true
+[node name="ScrollContainer" type="ScrollContainer" parent="Outer/UnitPanel"]
 custom_minimum_size = Vector2(1728, 230)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="BaseUnits" type="HBoxContainer" parent="Outer/UnitPanel/ScrollContainer"]
+custom_minimum_size = Vector2(1728, 230)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

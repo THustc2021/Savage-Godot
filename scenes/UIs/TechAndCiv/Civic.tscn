@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://b1rj4e5mks5ga"]
 
-[ext_resource type="Script" path="res://Scripts/UIs/Civic.gd" id="1_obdv8"]
+[ext_resource type="Script" path="res://Scripts/UIs/TechAndCiv/Civic.gd" id="1_obdv8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ous2o"]
 bg_color = Color(0.878431, 0.772549, 0.423529, 1)

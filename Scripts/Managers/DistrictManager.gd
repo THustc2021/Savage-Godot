@@ -1,11 +1,11 @@
-extends Node
+class_name DistrictManager
 
-@export var districts = {
+static var DISTRICTS = {
 	0: preload("res://scenes/Districts/watchhouse.tscn")
 }
 
-func create_district(district_id, tile_pos, faction):
-	var ds = districts[district_id].instantiate()
+static func create_district(district_id, tile_pos, faction):
+	var ds = DISTRICTS[district_id].instantiate()
 	ds.setup(tile_pos, faction)
-	add_child(ds)
+	GlobalConfig.tilemap.add_child(ds)
 	return ds

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://d2rmiscg55e1f"]
 
-[ext_resource type="Script" path="res://Scripts/UIs/CityPanel.gd" id="1_irrsx"]
+[ext_resource type="Script" path="res://Scripts/UIs/City/CityPanel.gd" id="1_irrsx"]
 [ext_resource type="Texture2D" uid="uid://g527rub16q8r" path="res://assets/UI/pawn_up.png" id="1_jdvbl"]
 [ext_resource type="Texture2D" uid="uid://cqdw2k71bbuly" path="res://assets/UI/book_closed.png" id="2_blgg6"]
 

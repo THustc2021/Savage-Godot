@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bqfs1do26gjex"]
+[gd_scene load_steps=46 format=3 uid="uid://bqfs1do26gjex"]
 
 [ext_resource type="Script" path="res://Scripts/setup_game.gd" id="1_drcm2"]
 [ext_resource type="Texture2D" uid="uid://wm556u45u78m" path="res://assets/UI/Faction.png" id="2_jxftc"]
@@ -8,7 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://ccsq0uepm5my8" path="res://assets/Maps/Waters/ocean.png" id="3_tkdee"]
 [ext_resource type="Texture2D" uid="uid://ce4q8rj1y56th" path="res://assets/Maps/Thres/Grass.png" id="4_r2k43"]
 [ext_resource type="Script" path="res://Scripts/Utils/pline.gd" id="5_2gunc"]
+[ext_resource type="Script" path="res://Scripts/Managers/DistrictManager.gd" id="6_n6qfh"]
 [ext_resource type="Texture2D" uid="uid://dwwcgx02dk2q8" path="res://assets/Maps/Thres/Deserts.png" id="6_nll88"]
+[ext_resource type="Script" path="res://Scripts/Managers/resourceManager.gd" id="10_6mjl6"]
 [ext_resource type="Texture2D" uid="uid://grev4e4oswqd" path="res://assets/Maps/stone.png" id="12_nrklj"]
 [ext_resource type="Script" path="res://Scripts/Utils/FogOfWar.gd" id="15_ivqak"]
 [ext_resource type="Texture2D" uid="uid://d2fjiu00lx0cb" path="res://assets/FogOfWar/full_black.png" id="15_porl7"]
@@ -26,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://cyxttbng6xd6k" path="res://assets/UI/general.png" id="27_2226d"]
 [ext_resource type="Script" path="res://Scripts/UIs/MainUI/RightUp.gd" id="29_w6lga"]
 [ext_resource type="Script" path="res://Scripts/UIs/MainUI/RightEvent.gd" id="30_b6ct2"]
+[ext_resource type="Script" path="res://Scripts/GlobalEventManager.gd" id="31_23mo8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eky30"]
 texture = ExtResource("2_u3hcw")
@@ -302,6 +305,12 @@ size = Vector2i(2400, 1271)
 render_target_update_mode = 4
 script = ExtResource("2_kb4qj")
 
+[node name="resourceManager" type="Node" parent="MapViewportContainer/MapViewport"]
+script = ExtResource("10_6mjl6")
+
+[node name="districtManager" type="Node" parent="MapViewportContainer/MapViewport"]
+script = ExtResource("6_n6qfh")
+
 [node name="TileMap" type="TileMap" parent="MapViewportContainer/MapViewport"]
 tile_set = SubResource("TileSet_o842r")
 format = 2
@@ -486,7 +495,7 @@ offset_left = -128.0
 offset_right = 128.0
 offset_bottom = 128.0
 grow_horizontal = 2
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("29_w6lga")
 
 [node name="lastSprite" type="TextureRect" parent="RightUp"]
@@ -550,6 +559,7 @@ libraries = {
 }
 
 [node name="RightEvent" type="Control" parent="."]
+z_as_relative = false
 custom_minimum_size = Vector2(100, 500)
 layout_mode = 1
 anchors_preset = 6
@@ -562,7 +572,7 @@ offset_top = -1007.5
 offset_bottom = -7.5
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("30_b6ct2")
 
 [node name="Mat" type="StaticBody2D" parent="RightEvent"]
@@ -572,5 +582,8 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightEvent/Mat"]
 shape = SubResource("RectangleShape2D_3sglj")
+
+[node name="GlobalEventManager" type="Node2D" parent="."]
+script = ExtResource("31_23mo8")
 
 [connection signal="pressed" from="RightDown/NextTurn" to="." method="_on_next_turn_pressed"]

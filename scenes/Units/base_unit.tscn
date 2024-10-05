@@ -45,8 +45,21 @@ script = ExtResource("1_lgd3j")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ecc5j")
 
-[node name="Background" type="Sprite2D" parent="."]
+[node name="Portrait" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_rv4ji")
+expand_mode = 1
 
 [node name="SupplyBar" type="ProgressBar" parent="."]
 clip_contents = true

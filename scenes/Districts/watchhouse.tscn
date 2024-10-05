@@ -49,7 +49,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/path = NodePath("Portrait:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -92,7 +92,7 @@ angle_min = -720.0
 angle_max = 720.0
 scale_amount_max = 15.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Portrait" type="Sprite2D" parent="."]
 texture = ExtResource("2_8ixbn")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]

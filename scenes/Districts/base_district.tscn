@@ -9,7 +9,7 @@
 z_index = 2
 script = ExtResource("1_tpsry")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Portrait" type="Sprite2D" parent="."]
 texture = ExtResource("1_08hsl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bq66t58j6ueo6"]
+[gd_scene load_steps=3 format=3 uid="uid://dvqbaoj7tcry5"]
 
-[ext_resource type="Texture2D" uid="uid://cdncjtywmv5y4" path="res://assets/UI/unit_bg.png" id="1_ms5n0"]
-[ext_resource type="Texture2D" uid="uid://hqq7omqpmul2" path="res://assets/Units/campfire.png" id="2_tv3oj"]
+[ext_resource type="Texture2D" uid="uid://cdncjtywmv5y4" path="res://assets/UI/unit_bg.png" id="1_7ab6c"]
+[ext_resource type="Texture2D" uid="uid://hqq7omqpmul2" path="res://assets/Units/campfire.png" id="2_22h4s"]
 
 [node name="Icon" type="TextureRect"]
 clip_contents = true
@@ -9,7 +9,7 @@ offset_right = 96.0
 offset_bottom = 96.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("1_ms5n0")
+texture = ExtResource("1_7ab6c")
 expand_mode = 1
 stretch_mode = 4
 
@@ -27,5 +27,5 @@ offset_right = 24.0
 offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_tv3oj")
+texture = ExtResource("2_22h4s")
 expand_mode = 1

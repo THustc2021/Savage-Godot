@@ -104,6 +104,7 @@ layout_mode = 2
 
 [node name="Select" type="HBoxContainer" parent="Outer/Main/Numset"]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="SelectLabel" type="Label" parent="Outer/Main/Numset/Select"]
 custom_minimum_size = Vector2(40, 23)
@@ -120,6 +121,7 @@ label_settings = SubResource("LabelSettings_trgok")
 
 [node name="Number" type="HBoxContainer" parent="Outer/Main/Numset"]
 layout_mode = 2
+size_flags_horizontal = 8
 alignment = 2
 
 [node name="Label" type="Label" parent="Outer/Main/Numset/Number"]
@@ -133,6 +135,13 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 context_menu_enabled = false
+
+[node name="CheckBox" type="CheckBox" parent="Outer/Main/Numset/Number"]
+layout_mode = 2
+size_flags_horizontal = 6
+tooltip_text = "设置此数量为此基础单位的人数上限。补员时，最多补至此数量。"
+text = "设为人数上限"
+alignment = 1
 
 [node name="HSlider" type="HSlider" parent="Outer/Main"]
 layout_mode = 2
@@ -322,14 +331,15 @@ layout_mode = 2
 text = "准备出征："
 
 [node name="Units" type="ScrollContainer" parent="Outer/Result/Main"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_amny3")
 vertical_scroll_mode = 0
 
 [node name="UnitsMain" type="HBoxContainer" parent="Outer/Result/Main/Units"]
-custom_minimum_size = Vector2(380, 150)
+custom_minimum_size = Vector2(380, 180)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 8
 
 [node name="Info" type="HSplitContainer" parent="Outer/Result/Main"]

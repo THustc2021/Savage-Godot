@@ -3,7 +3,7 @@ extends Node
 signal add_event(event_item)
 signal update_rightup(faction_)
 
-@export var allow_fog_of_war = true
+@export var allow_fog_of_war = false
 
 enum UNIT_STATE{
 	IDLE,
@@ -63,19 +63,24 @@ enum VEHICLES{
 var vehicles := {}
 
 @onready var tribe_names := []
+@onready var general_names := {}
 
 @onready var selected_unit
+@onready var clicked_under_unit = false
 @onready var selected_city
 @onready var player_turn
 
-var Unit_Down_Panel_scene = preload("res://scenes/UIs/DownPanel.tscn")
-var Unit_Analysis_Panel_scene = preload("res://scenes/UIs/UnitAnalysis.tscn")
-var Faction_Right_Panel_scene = preload("res://scenes/UIs/FactionPanel.tscn")
-var City_Info_Panel_scene = preload("res://scenes/UIs/CityInfoPanel.tscn")
-var Technology_Panel_scene = preload("res://scenes/UIs/Technology.tscn")
-var Civic_Panel_scene = preload("res://scenes/UIs/Civic.tscn")
-var current_main_panel
+var general_names_dir = "res://assets/Texts/General_Names/"
+var Unit_Down_Panel_scene = preload("res://scenes/UIs/Unit/UnitInfo.tscn")
+var Unit_Analysis_Panel_scene = preload("res://scenes/UIs/Unit/UnitAnalysis.tscn")
+var Faction_Right_Panel_scene = preload("res://scenes/UIs/Faction/FactionPanel.tscn")
+var City_Info_Panel_scene = preload("res://scenes/UIs/City/CityInfoPanel.tscn")
+var Technology_Panel_scene = preload("res://scenes/UIs/TechAndCiv/Technology.tscn")
+var Civic_Panel_scene = preload("res://scenes/UIs/TechAndCiv/Civic.tscn")
+var city_garrison_panel_scene = preload("res://scenes/UIs/City/CityGarrison.tscn")
+var city_garrison_panel
 var Unit_Info_Panel
+var current_main_panel
 
 var turn_num = 0
 
@@ -84,6 +89,15 @@ func _ready():
 	var file = FileAccess.open("res://assets/Texts/Tribe_Names.txt", FileAccess.READ)
 	tribe_names.append_array(file.get_as_text().split("\n"))
 	file.close()
+	var gdir = DirAccess.open(general_names_dir)
+	gdir.list_dir_begin()
+	var file_name = gdir.get_next()
+	while file_name != "":
+		file = FileAccess.open(general_names_dir + file_name, FileAccess.READ)
+		general_names[file_name.split(".")[0]] = file.get_as_text().split("\n")
+		file.close()
+		file_name = gdir.get_next()
+
 	# 所有国家授予科技
 	setup_target(tech_file_path, TECHS, tech_images_root, techs)
 	setup_target(civic_file_path, CIVICS, civic_images_root, civs)
@@ -139,11 +153,20 @@ func show_unit_info():
 	current_main_panel = Unit_Down_Panel_scene.instantiate()
 	Unit_Info_Panel = current_main_panel
 	$"../Main".add_child(Unit_Info_Panel)
+
+func show_city_garrisoned(city):
+	if current_main_panel != null:
+		remove_current_main()
+	current_main_panel = city_garrison_panel_scene.instantiate()
+	Unit_Info_Panel = current_main_panel
+	$"../Main".add_child(Unit_Info_Panel)
+	current_main_panel.setup(city)
 	
-func show_unit_analysis():
+func show_unit_analysis(unit):
 	if current_main_panel != null:
 		remove_current_main(false)
 	current_main_panel = Unit_Analysis_Panel_scene.instantiate()
+	current_main_panel.setup(unit)
 	$"../Main".add_child(current_main_panel)
 	
 func show_city_info():
@@ -181,12 +204,6 @@ func select_unit(unit):
 func select_city(city):
 	self.selected_city = city
 
-func meet_new_faction(ori_f, new_f):
-	ori_f.visible_faction_list.append(new_f)
-	if ori_f == factionManager.player_faction:
-		emit_signal("update_rightup", new_f)
-		emit_signal("add_event", [EVENT_TYPE.MEET_NEW_FACTION, {"target": new_f}])
-
 ######### 
 func allow_recruit_base_unit_for_faction(faction, base_unit_ids):
 	faction.allow_recruit_base_unit(base_unit_ids)
@@ -202,6 +219,12 @@ func allow_vehicle_for_faction(faction, vehicle_ids):
 
 #########
 
+func meet_new_faction(ori_f, new_f):
+	ori_f.visible_faction_list.append(new_f)
+	if ori_f == factionManager.player_faction:
+		emit_signal("update_rightup", new_f)
+		emit_signal("add_event", [EVENT_TYPE.MEET_NEW_FACTION, {"target": new_f}])
+		
 func develop_new_tech(ori_f, tech_id):
 	ori_f.tech_researched.append(tech_id)
 	if tech_id in ori_f.tech_in_research:

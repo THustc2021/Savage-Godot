@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://d4heo36ii58iq"]
 
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_qgu7u"]
-[ext_resource type="Script" path="res://Scripts/UIs/FactionPanel.gd" id="2_0f1ti"]
+[ext_resource type="Script" path="res://Scripts/UIs/Faction/FactionPanel.gd" id="2_0f1ti"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4is7r"]
 font_size = 24

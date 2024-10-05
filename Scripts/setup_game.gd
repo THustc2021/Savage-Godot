@@ -1,12 +1,9 @@
 extends Control
 
 @export var AIFactionNum = 20
+var factionManager
 
 @onready var tilemap = $"MapViewportContainer/MapViewport/TileMap"
-@onready var resourceManager = $"MapViewportContainer/MapViewport/resourceManager"
-@onready var districtManager = $"MapViewportContainer/MapViewport/districtManager"
-@onready var unitManager = $"MapViewportContainer/MapViewport/unitManager"
-@onready var factionManager = $"MapViewportContainer/MapViewport/factionManager"
 @onready var camera = $MapViewportContainer/MapViewport/TileMap/Camera2D
 
 var main_ai = preload("res://Scripts/Managers/AIManager.gd")
@@ -16,20 +13,21 @@ var thread
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# 设置全局参数
+	factionManager = FactionManager.new()
 	GlobalConfig.factionManager = factionManager
 	# 生成资源
 	for xy in tilemap.valid_cells:
 		if tilemap.grid[xy.x][xy.y] in [tilemap.GridType.GPLAIN, tilemap.GridType.DPLAIN]:
 			if tilemap.grid[xy.x][xy.y] == tilemap.GridType.GPLAIN and randf() > 0.9:
-				resourceManager.create_resource(2, xy)
+				ResourceManager.create_resource(2, xy)
 			elif tilemap.grid[xy.x][xy.y] == tilemap.GridType.DPLAIN and randf() > 0.9:
-				resourceManager.create_resource(3, xy)
+				ResourceManager.create_resource(3, xy)
 			else:
 				var tmp = randf()
 				if tmp > 0.9:
-					resourceManager.create_resource(0, xy)
+					ResourceManager.create_resource(0, xy)
 				elif tmp > 0.8:
-					resourceManager.create_resource(1, xy)
+					ResourceManager.create_resource(1, xy)
 	# 创建玩家部落
 	var player_tribe = factionManager.create_tribe(0, "颜颜部落", tilemap.create_init_path_map(), null, true)											
 	var stps := []
@@ -39,8 +37,8 @@ func _ready():
 		print("错误的出生点，重新设置")
 		var stp = Vector2i(randi() % tilemap.map_width_tiles_num, randi() % tilemap.map_height_tiles_num)
 		if stp in tilemap.valid_cells:	# 检查坐标合法性，不合法返回空
-			warehouse_p = districtManager.create_district(0, stp, player_tribe)
-			barbarian_p = unitManager.create_unit([unitManager.create_base_unit(0)], stp, player_tribe)
+			warehouse_p = DistrictManager.create_district(0, stp, player_tribe)
+			barbarian_p = UnitManager.create_unit([UnitManager.create_base_unit(0)], player_tribe, stp)
 			stps.append(stp)
 	
 	# 设置相机位置
@@ -62,8 +60,8 @@ func _ready():
 						print("过于靠近已有部落！")
 						break
 				if flag:
-					warehouse_pp = districtManager.create_district(0, stp, tribe)
-					barbarian_pp = unitManager.create_unit([unitManager.create_base_unit(0)], stp, tribe)
+					warehouse_pp = DistrictManager.create_district(0, stp, tribe)
+					barbarian_pp = UnitManager.create_unit([UnitManager.create_base_unit(0)], tribe, stp)
 					stps.append(stp)
 	
 	$"MainInfoPanel/MainInfo/FactionButton".connect("pressed", GlobalConfig.show_faction_info)

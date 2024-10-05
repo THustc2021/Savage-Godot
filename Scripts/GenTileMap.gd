@@ -209,7 +209,6 @@ func show_reachable_cells(astar, from: Vector2i, movement_point:int, this_valid_
 				var pl = astar.cal_weighted_path(p, flag)	# 这里会弹出第一个起点元素
 				if pl <= movement_point:
 					ava_cells.add(to)
-		current_list.free()
 		current_list = ncurrent_list
 		m += 1
 	# 高亮可移动位置
@@ -218,6 +217,3 @@ func show_reachable_cells(astar, from: Vector2i, movement_point:int, this_valid_
 		h.position = self.map_to_local(cell)
 		add_child(h)  # 添加到场景中
 		self.hlcell_list.append(h)
-	# 释放
-	ava_cells.free()
-	current_list.free()

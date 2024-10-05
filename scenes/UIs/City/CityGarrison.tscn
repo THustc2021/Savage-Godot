@@ -1,0 +1,141 @@
+[gd_scene load_steps=5 format=3 uid="uid://buqafsd65llig"]
+
+[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_4ve1i"]
+[ext_resource type="Script" path="res://Scripts/UIs/City/CityGarrison.gd" id="2_8s6wh"]
+[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_erit4"]
+
+[sub_resource type="Theme" id="Theme_fgcap"]
+HBoxContainer/constants/separation = 16
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/font_sizes/font_size = 16
+VBoxContainer/constants/separation = 16
+
+[node name="CityGarrison" type="Container"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1000.0
+offset_top = -304.0
+offset_right = -1000.0
+offset_bottom = -304.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_fgcap")
+script = ExtResource("2_8s6wh")
+
+[node name="Main" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Upper" type="PanelContainer" parent="Main"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Main" type="HBoxContainer" parent="Main/Upper"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Down" type="PanelContainer" parent="Main"]
+custom_minimum_size = Vector2(1968, 256)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_4ve1i")
+
+[node name="Main" type="HBoxContainer" parent="Main/Down"]
+custom_minimum_size = Vector2(1968, 256)
+layout_mode = 2
+alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="Main/Down/Main"]
+clip_contents = true
+custom_minimum_size = Vector2(224, 192)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="Inner" type="VBoxContainer" parent="Main/Down/Main/Panel"]
+custom_minimum_size = Vector2(224, 230)
+layout_mode = 2
+alignment = 1
+
+[node name="Basic" type="HBoxContainer" parent="Main/Down/Main/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 0
+
+[node name="CommanderName" type="Label" parent="Main/Down/Main/Panel/Inner/Basic"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.999965, 0.668825, 0.616958, 1)
+theme_override_colors/font_shadow_color = Color(0.830335, 0.830335, 0.830335, 1)
+theme_override_font_sizes/font_size = 24
+text = "将军"
+
+[node name="State" type="Label" parent="Main/Down/Main/Panel/Inner/Basic"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="MovementPoint" type="Label" parent="Main/Down/Main/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Supplement" type="HBoxContainer" parent="Main/Down/Main/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Main/Down/Main/Panel/Inner/Supplement"]
+layout_mode = 2
+text = "补给："
+
+[node name="ProgressBar" type="ProgressBar" parent="Main/Down/Main/Panel/Inner/Supplement"]
+custom_minimum_size = Vector2(112, 32)
+layout_mode = 2
+
+[node name="Numer" type="HBoxContainer" parent="Main/Down/Main/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 23)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Main/Down/Main/Panel/Inner/Numer"]
+layout_mode = 2
+text = "人数："
+
+[node name="ProgressBar" type="ProgressBar" parent="Main/Down/Main/Panel/Inner/Numer"]
+custom_minimum_size = Vector2(112, 32)
+layout_mode = 2
+
+[node name="Analyse" type="TextureButton" parent="Main/Down/Main/Panel/Inner"]
+clip_contents = true
+custom_minimum_size = Vector2(196, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "分析当前部队"
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("3_erit4")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitPanel" type="PanelContainer" parent="Main/Down/Main"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 7.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Main/Down/Main/UnitPanel"]
+custom_minimum_size = Vector2(1728, 230)
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="BaseUnits" type="HBoxContainer" parent="Main/Down/Main/UnitPanel/ScrollContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(1728, 230)
+layout_mode = 2

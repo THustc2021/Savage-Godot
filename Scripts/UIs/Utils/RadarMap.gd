@@ -1,11 +1,10 @@
 extends Node2D
 
 # 数据值，表示每个维度上的数值，范围为0到1
-var data = [0.8, 0.6, 0.9, 0.7, 0.5, 0.85]
+var data
 
 # 标签数组，表示每个顶点的名称
 var labels = ["普通近战单位", "对抗骑兵单位", "远程攻击单位", "骑兵单位", "攻城单位", "防御设施"]
-
 # 雷达图的维度（正六边形，顶点数固定为6）
 var dimensions = 6
 # 雷达图的半径
@@ -21,25 +20,26 @@ func _ready():
 	font = ThemeDB.fallback_font
 
 func _draw():
-	# 生成六边形顶点
-	var points = []
-	for i in range(dimensions):
-		var angle = (PI * 2 * i) / dimensions  # 每个顶点的角度
-		var value = data[i]  # 获取当前维度的数值
-		var point = center + Vector2(cos(angle), sin(angle)) * radius * value
-		points.append(point)
-	
-	# 设置多边形的颜色
-	var color = Color(0.0, 0.5, 1.0, 0.8)
-	
-	# 绘制雷达图的多边形
-	draw_polygon(points, [color])
-	
-	# 可选：绘制网格线和轴线
-	_draw_grid()
+	if data != null:
+		# 生成六边形顶点
+		var points = []
+		for i in range(dimensions):
+			var angle = (PI * 2 * i) / dimensions  # 每个顶点的角度
+			var value = data[i]  # 获取当前维度的数值
+			var point = center + Vector2(cos(angle), sin(angle)) * radius * value
+			points.append(point)
+		
+		# 设置多边形的颜色
+		var color = Color(0.0, 0.5, 1.0, 0.8)
+		
+		# 绘制雷达图的多边形
+		draw_polygon(points, [color])
+		
+		# 可选：绘制网格线和轴线
+		_draw_grid()
 
-	# 绘制顶点的标签
-	_draw_labels()
+		# 绘制顶点的标签
+		_draw_labels()
 
 func _draw_grid():
 	# 绘制网格线和轴线，增强视觉效果

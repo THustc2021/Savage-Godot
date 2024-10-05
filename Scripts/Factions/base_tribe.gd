@@ -1,10 +1,9 @@
-extends Node
-
-@onready var tilemap
-@onready var is_player_faction
-@onready var capital
-@onready var icon
-@onready var astar
+var tilemap
+var is_player_faction
+var capital
+var icon_scene = preload("res://scenes/Icons/tribe_icon.tscn")
+var icon
+var astar
 
 @export var tribe_name:String
 @export var faction_color = Color(randf(), randf(), randf())
@@ -33,8 +32,6 @@ var tech_researched := []	# 已经完成研究的科技
 var tech_in_research := []	# 正在进行研究的科技
 var civ_researched := []	# 已经完成研究的市政
 var civ_in_research := []	# 正在进行研究的市政
-
-var icon_scene = preload("res://scenes/Factions/tribe_icon.tscn")
 
 func modify_exploration(value):
 	# 揭示新地块+0.25

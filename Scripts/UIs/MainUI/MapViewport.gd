@@ -1,12 +1,7 @@
-extends Node2D
+extends SubViewport
 
-@onready var pline
-@onready var tilemap
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.tilemap = GlobalConfig.tilemap
-	self.pline = $"../MapViewportContainer/MapViewport/TileMap/Line2D"
+@onready var pline = $"TileMap/Line2D"
+@onready var tilemap = $"TileMap"
 
 func _unhandled_input(event):
 	var u = GlobalConfig.selected_unit
@@ -27,8 +22,16 @@ func _unhandled_input(event):
 			# 如果有未处理的点击事件
 			if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed():
 				if u != null:
+					# 是否点击同一个单位两次
+					var clicked_tile = tilemap.local_to_map(tilemap.get_global_mouse_position())
+					if clicked_tile == u.tile_position:
+						GlobalConfig.clicked_under_unit = true
+					else:
+						GlobalConfig.clicked_under_unit = false
 					u.unselected()
 					GlobalConfig.selected_unit = null
+				else:
+					GlobalConfig.clicked_under_unit = false
 				if GlobalConfig.selected_city != null:
 					GlobalConfig.selected_city.unselected()
 					GlobalConfig.selected_city = null

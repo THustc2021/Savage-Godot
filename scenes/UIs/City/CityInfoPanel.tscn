@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://5oirsg1xck85"]
 
-[ext_resource type="Script" path="res://Scripts/UIs/CityInfoPanel.gd" id="1_cyjey"]
+[ext_resource type="Script" path="res://Scripts/UIs/City/CityInfoPanel.gd" id="1_cyjey"]
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_e1wb8"]
 
 [sub_resource type="Theme" id="Theme_q723h"]

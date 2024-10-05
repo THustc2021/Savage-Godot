@@ -8,8 +8,12 @@ var _user_propose_unit_vehicle
 var proposed_unit_list := []
 var proposed_total_num = 0
 
+var default_per_max_unti_num
+var unit_num_set_max_checked = false
+
 @onready var unit_num_proposed_lineedit = $"Outer/Main/Numset/Number/TextEdit"
 @onready var unit_num_proposed_slider = $"Outer/Main/HSlider"
+@onready var unit_num_set_max = $"Outer/Main/Numset/Number/CheckBox"
 @onready var _unit_select_type = $"Outer/Main/Numset/Select/SelectType"
 @onready var _unit_proposed_portrait = $"Outer/Main/UnitTools/PortraitItem/Portrait"
 @onready var _unit_proposed_weapon = $"Outer/Main/UnitTools/PortraitItem/Portrait/Weapon"
@@ -21,6 +25,7 @@ var proposed_total_num = 0
 @onready var _result_units_container = $"Outer/Result/Main/Units/UnitsMain"
 @onready var _prepared_unit_num = $"Outer/Result/Main/Info/UnitNum/Num"
 @onready var _prepared_total_num = $"Outer/Result/Main/Info/TotalNum/Num"
+@onready var _analysis_button = $"Outer/Result/Main/Analysis"
 
 # 实例化可供招募的目标
 func setup(p_c, max_base_unit_number):
@@ -28,7 +33,7 @@ func setup(p_c, max_base_unit_number):
 	for ut in city.can_recruit_unit_type:
 		var bvcp = Panel.new()
 		var bvc = VBoxContainer.new()
-		var bu = UnitManager.base_units[ut].new()
+		var bu = UnitManager.BASE_UNITS[ut].new()
 		var t = TextureButton.new()
 		t.texture_normal = load(bu.unit_portrait_path)
 		t.custom_minimum_size = Vector2(50, 100)
@@ -53,6 +58,7 @@ func setup(p_c, max_base_unit_number):
 		t.connect("pressed", _propose_target.bind(ut, bu, bvcp))
 		$"Outer/Main/Panel/UnitType".add_child(bvcp)
 	unit_num_proposed_slider.max_value = max_base_unit_number
+	default_per_max_unti_num = max_base_unit_number
 	unit_num_proposed_slider.connect("value_changed", _on_slider_value_changed)
 	unit_num_proposed_slider.value = city.can_fight_population
 	unit_num_proposed_lineedit.connect("text_changed", _on_textedit_value_changed)
@@ -68,6 +74,7 @@ func setup(p_c, max_base_unit_number):
 		t.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		t.connect("pressed", _set_proposed_weapon.bind(w, t.texture_normal))
 		_weapon_avail_container.add_child(t)
+		_user_propose_unit_weapon = w
 	for w in city.avail_armour:
 		var t = TextureButton.new()
 		t.texture_normal = load(GlobalConfig.armours[w]["icon"])
@@ -79,6 +86,7 @@ func setup(p_c, max_base_unit_number):
 		t.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		t.connect("pressed", _set_proposed_armour.bind(w, t.texture_normal))
 		_armour_avail_container.add_child(t)
+		_user_propose_unit_armour = w
 	for w in city.avail_vehicle:
 		var t = TextureButton.new()
 		t.texture_normal = load(GlobalConfig.vehicles[w]["icon"])
@@ -90,9 +98,19 @@ func setup(p_c, max_base_unit_number):
 		t.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		t.connect("pressed", _set_proposed_vehicle.bind(w, t.texture_normal))
 		_vehicle_avail_container.add_child(t)
+		_user_propose_unit_vehicle = w
 	connect("confirmed", _recruit_confirmed)
 	connect("canceled", _recruit_cancelled)
-	
+	_analysis_button.connect("pressed", _analyse_unit)
+	unit_num_set_max.connect("toggled", _toggle_check_box)
+
+func _toggle_check_box(flag):
+	unit_num_set_max_checked = flag
+
+func _analyse_unit():
+	var baseunit_tmp = UnitManager.create_unit(proposed_unit_list, city.belonged_faction)
+	GlobalConfig.show_unit_analysis(baseunit_tmp)
+
 func _propose_target(ut, bu, bvcp):
 	if _user_propose_unit != bu:
 		_user_propose_unit = bu	# 用户选中此单位
@@ -116,17 +134,27 @@ func _propose_target(ut, bu, bvcp):
 	else:	# 用户确认点击
 		bvcp.modulate.a = 0.5
 		# 加入到队列中
+		var _max_value = default_per_max_unti_num if not unit_num_set_max_checked else unit_num_proposed_slider.value
 		var _proposed_base_unit = UnitManager.create_base_unit(
-							ut, unit_num_proposed_slider.value, unit_num_proposed_slider.value,
+							ut, _max_value, 
+							unit_num_proposed_slider.value,
 							_user_propose_unit_weapon, _user_propose_unit_armour, _user_propose_unit_vehicle
 							)
 		proposed_unit_list.append(_proposed_base_unit)
 		proposed_total_num += _proposed_base_unit.current_num
 		# 在右侧展示
+		var cc = VBoxContainer.new()
 		var c = _unit_proposed_portrait.duplicate()
 		c.connect("draw", _draw_mask.bind(c, _proposed_base_unit.recruit_need_time))
-		c.connect("pressed", _cancel_this_unit.bind(c, _proposed_base_unit))
-		_result_units_container.add_child(c)
+		c.connect("pressed", _cancel_this_unit.bind(cc, _proposed_base_unit))
+		cc.add_child(c)
+		var l = Label.new()
+		l.text = str(_proposed_base_unit.current_num) + "/" + str(_max_value)
+		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		cc.add_child(l)
+		cc.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		_result_units_container.add_child(cc)
 		# 更新其余信息
 		_prepared_unit_num.text = str(len(proposed_unit_list))
 		_prepared_total_num.text = str(proposed_total_num)
@@ -156,20 +184,22 @@ func _cancel_this_unit(c, unit):
 	_prepared_total_num.text = str(proposed_total_num)
 
 func _recruit_confirmed():
-	# 保存
-
-	#
-	city.remove_child(self)
-	call_deferred("free")
-	city.city_recruit_window = null
+	if len(proposed_unit_list) > 0:
+		# 保存
+		# 如果该城市表面已有单位，则放到驻军单位里面去
+		if city.get_overlapping_bodies():
+			var u = UnitManager.create_unit(proposed_unit_list, city.belonged_faction, city.tile_position, true)
+			city.garrison_unit.append(u)
+		else:
+			var u = UnitManager.create_unit(proposed_unit_list, city.belonged_faction, city.tile_position)
+		#
+		city.remove_child(self)
+		call_deferred("free")
+		city.city_recruit_window = null
 func _recruit_cancelled():
 	city.remove_child(self)
 	call_deferred("free")
 	city.city_recruit_window = null
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 	
 func _on_slider_value_changed(value):
 	unit_num_proposed_lineedit["theme_override_colors/font_color"] = Color(1, 1, 1)  # 恢复为白色
@@ -193,3 +223,11 @@ func _set_proposed_armour(aid, t):
 func _set_proposed_vehicle(vid, t):
 	_user_propose_unit_vehicle = vid 
 	_unit_proposed_vehicle.texture = t
+	
+func _process(delta):
+	if len(proposed_unit_list) == 0:
+		get_ok_button().disabled = true
+		get_ok_button().tooltip_text = "您必须部署至少一个单位。"
+	else:
+		get_ok_button().disabled = false
+		get_ok_button().tooltip_text = ""

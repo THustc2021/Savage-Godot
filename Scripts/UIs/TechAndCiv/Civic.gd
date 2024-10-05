@@ -1,6 +1,6 @@
 extends Panel
 
-var item_scene = preload("res://scenes/UIs/Civic_Item.tscn")
+var item_scene = preload("res://scenes/UIs/TechAndCiv/Civic_Item.tscn")
 
 func _ready():
 	var civs = GlobalConfig.civs
