@@ -5,9 +5,11 @@ var _user_propose_unit
 var _user_propose_unit_weapon
 var _user_propose_unit_armour
 var _user_propose_unit_vehicle
-var proposed_unit_list := []
-var proposed_total_num = 0
 
+var proposed_unit_list := []
+var proposed_unit_general = null
+
+var proposed_total_num = 0
 var default_per_max_unti_num
 var unit_num_set_max_checked = false
 
@@ -108,8 +110,11 @@ func _toggle_check_box(flag):
 	unit_num_set_max_checked = flag
 
 func _analyse_unit():
+	# 隐藏自己
+	hide()
 	var baseunit_tmp = UnitManager.create_unit(proposed_unit_list, city.belonged_faction)
-	GlobalConfig.show_unit_analysis(baseunit_tmp)
+	var panel = GlobalConfig.show_unit_analysis(baseunit_tmp)
+	panel.connect("tree_exiting", show)
 
 func _propose_target(ut, bu, bvcp):
 	if _user_propose_unit != bu:
@@ -185,14 +190,7 @@ func _cancel_this_unit(c, unit):
 
 func _recruit_confirmed():
 	if len(proposed_unit_list) > 0:
-		# 保存
-		# 如果该城市表面已有单位，则放到驻军单位里面去
-		if city.get_overlapping_bodies():
-			var u = UnitManager.create_unit(proposed_unit_list, city.belonged_faction, city.tile_position, true)
-			city.garrison_unit.append(u)
-		else:
-			var u = UnitManager.create_unit(proposed_unit_list, city.belonged_faction, city.tile_position)
-		#
+		city.command_raise_unit(proposed_unit_list, proposed_unit_general)
 		city.remove_child(self)
 		call_deferred("free")
 		city.city_recruit_window = null

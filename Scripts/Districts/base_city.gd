@@ -20,6 +20,7 @@ var city_recruit_scene = preload("res://scenes/UIS/Unit/RaiseUnit.tscn")
 var city_recruit_window
 
 var garrison_unit := []	# 该城市的驻军
+var _current_outside_unit = null
 
 func setup(tilepos, faction):
 	self.tilemap = GlobalConfig.tilemap
@@ -79,3 +80,28 @@ func _ready():
 	
 func _process(_delta):
 	$"ProgressBar".value = self.belonged_faction.transfer_to_citystate_point
+
+
+## 
+func set_unit_garrison(unit):
+	if unit not in garrison_unit:
+		garrison_unit.append(unit)
+	# 如果当前仅有1个驻军单位，直接展示
+	if len(garrison_unit) <= 1:
+		unit.set_outside_city()
+		_current_outside_unit = unit
+	else:
+		unit.set_inside_city()
+func unit_leave_city(unit):
+	garrison_unit.erase(unit)
+	if unit == _current_outside_unit:
+		if len(garrison_unit):
+			garrison_unit[0].set_outside_city()
+			_current_outside_unit = garrison_unit[0]
+		else:
+			_current_outside_unit = null
+##
+func command_raise_unit(proposed_unit_list, general=null):
+	var u = UnitManager.create_unit(proposed_unit_list, belonged_faction, tile_position, self, general)
+	set_unit_garrison(u)
+	return u

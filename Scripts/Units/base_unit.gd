@@ -27,26 +27,36 @@ var current_movement_point
 var current_supplement
 var current_total_soldiers_num := 0
 var current_unit_list := []
-var current_in_city :bool 	# 是否是城市驻军
+var _current_in_city = null 	# 是否在城市中
+var _current_inside_city = false	# 是否是可见的（管理ui）
 
 var attack_non_declare_confirmed_scene = preload("res://scenes/UIs/PopUpwindows/PopupWindow.tscn")
 var attack_non_declare_confirmed
 
 func _add_to_portrait(n):
 	$"Portrait".add_child(n)
+
+# 供城市端调用的接口，本地不调用（是否可见交给城市管理）
+func set_inside_city():
+	_current_inside_city = true
+	# 禁用碰撞
+	collision_layer = 0
+	collision_mask = 0
+func set_outside_city():
+	_current_inside_city = false
+	# 禁用碰撞
+	collision_layer = 1
+	collision_mask = 1
 	
-func setup(base_units, faction, tilepos=null, is_garrison_unit=false, general=null):
+func setup(base_units, faction, tilepos=null, in_city=null, general=null):
 	tilemap = GlobalConfig.tilemap
 	# 设置位置属性（未必会有）
 	if tilepos != null:	# 只是用作测试，未加入到场景，这种情况下不应该注册
 		tile_position = tilepos
 		position = tilemap.map_to_local(tilepos)
 		faction.register_unit(self)
-	if is_garrison_unit:
-		current_in_city = true
-		# 禁用碰撞
-		collision_layer = 0
-		collision_mask = 0
+	if in_city:
+		_current_in_city = in_city
 	# 设置指挥者
 	if general == null:
 		self.commander = load("res://Scripts/Units/Generals/base_general.gd").new()
@@ -130,11 +140,27 @@ func register_faction(faction):
 func on_turn_begin():
 	self.current_movement_point = movement_point
 
-func analyse_unit_strength():	# 评估单位战斗力
-	var sd_anti = []	# "普通近战单位", "对抗骑兵单位", "远程攻击单位", "骑兵单位", "攻城单位", "防御设施"
-	var sd_defe = []	# 各项单位自身的战力，上面是对抗这些单位时的战力
+func analyse_unit_strength(terrain_type):	# 评估单位战斗力
+	var sd_anti = {}	# "普通近战单位", "对抗骑兵单位", "远程攻击单位", "骑兵单位", "攻城单位", "防御设施"
+	var sd_defe = {}	# 各项单位自身的战力，上面是对抗这些单位时的战力
+	var res
+	var sd_anti_b
+	var sd_defe_b
 	for bu in current_unit_list:
-		pass
+		res = bu.analyse_basic_strength(terrain_type)
+		sd_anti_b = res[0]
+		for i in sd_anti_b:
+			if sd_anti.get(i):
+				sd_anti[i] += sd_anti_b[i]
+			else:
+				sd_anti[i] = sd_anti_b[i]
+		sd_defe_b = res[1]
+		for i in sd_defe_b:
+			if sd_defe.get(i):
+				sd_defe[i] += sd_defe_b[i]
+			else:
+				sd_defe[i] = sd_defe_b[i]
+	return [sd_anti, sd_defe]
 
 # 修改坐标后建立寻路列表
 func prepare_move(clicked_tile):
@@ -170,7 +196,7 @@ func move():
 		last_no_collide = tile_position	# 如果发生了耗尽的碰撞，回溯到这个位置
 
 func _physics_process(delta):	
-	if not current_in_city and (tile_position in GlobalConfig.factionManager.player_faction.view_manager.view_highlight_tile_list or \
+	if not _current_inside_city and (tile_position in GlobalConfig.factionManager.player_faction.view_manager.view_highlight_tile_list or \
 		not GlobalConfig.allow_fog_of_war):
 		visible = true
 	else:
@@ -205,13 +231,6 @@ func _physics_process(delta):
 			if tile_path.size() > 0:
 				# 接下来的移动是合法的吗？
 				tile_position_tmp = Vector2i(tile_path.pop_front())
-				# 目标位置是否有城市中心
-				#var hit_city = false
-				#for oa in $"View".get_overlapping_areas():
-					#if oa.get("belonged_faction") and oa.belonged_faction != self.belonged_faction \
-						#and oa.tile_position == tile_position_tmp:
-						#hit_city = true
-						#break
 				id = self.belonged_faction.astar.valid_dict.find_key(tile_position_tmp)
 				if id:
 					var need_movement_point = self.belonged_faction.astar.get_point_weight_scale(id)
@@ -246,7 +265,8 @@ func _physics_process(delta):
 			self.belonged_faction.view_manager.setup_view_highlight()
 			if self.belonged_faction == GlobalConfig.factionManager.player_faction:
 				GlobalConfig.show_view()
-			# 
+			# 移动完全结束时，判断是否仍在城市内
+			check_in_city()
 
 func _input_event(viewport, event, shape_idx):
 	if self.belonged_faction.is_player_faction:
@@ -278,7 +298,20 @@ func _input_event(viewport, event, shape_idx):
 func unselected():
 	self.modulate.a = 1
 	GlobalConfig.remove_current_main()
-	
+
+# check
+func check_in_city():
+	for oa in $"View".get_overlapping_areas():
+		if oa.get("belonged_faction") and oa.belonged_faction == self.belonged_faction \
+			and oa.tile_position == tile_position and oa != _current_in_city:
+			if _current_in_city:
+				_current_in_city.unit_leave_city(self)
+			oa.set_unit_garrison(self)
+			return
+	# 上面循环未返回，说明已经离开了城市
+	if _current_in_city:
+		_current_in_city.unit_leave_city(self)
+
 ### UI
 func _confirm_unit_attack():
 	remove_child(attack_non_declare_confirmed)

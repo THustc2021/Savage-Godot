@@ -3,7 +3,7 @@ extends Node
 signal add_event(event_item)
 signal update_rightup(faction_)
 
-@export var allow_fog_of_war = false
+@export var allow_fog_of_war = true
 
 enum UNIT_STATE{
 	IDLE,
@@ -168,6 +168,7 @@ func show_unit_analysis(unit):
 	current_main_panel = Unit_Analysis_Panel_scene.instantiate()
 	current_main_panel.setup(unit)
 	$"../Main".add_child(current_main_panel)
+	return current_main_panel
 	
 func show_city_info():
 	if current_main_panel != null:

@@ -6,10 +6,10 @@ var ui_choose_unit_panel
 var _city
 
 @onready var uppercontainer = $"Main/Upper/Main"
-@onready var analysebutton 
 
 @onready var DownMain = $"Main/Down/Main"
 @onready var ui_baseunits = $"Main/Down/Main/UnitPanel/ScrollContainer/BaseUnits"
+@onready var ui_analysebutton = $"Main/Down/Main/Panel/Inner/Analyse"
 @onready var ui_commander_name = $"Main/Down/Main/Panel/Inner/Basic/CommanderName"
 @onready var ui_unit_state = $"Main/Down/Main/Panel/Inner/Basic/State"
 @onready var ui_movement_point = $"Main/Down/Main/Panel/Inner/MovementPoint"
@@ -18,6 +18,9 @@ var _city
 
 func setup(city):
 	_city = city
+	
+	ui_analysebutton.connect("pressed", _analyse_unit)
+	
 	_reset_upper()
 
 func _choose_unit(event, unit, panel):
@@ -28,7 +31,8 @@ func _choose_unit(event, unit, panel):
 		ui_choose_unit_panel = panel
 
 func _analyse_unit():
-	GlobalConfig.show_unit_analysis(choose_unit)
+	if choose_unit:
+		GlobalConfig.show_unit_analysis(choose_unit)
 	
 func _reset_upper():
 	for c in uppercontainer.get_children():

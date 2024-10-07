@@ -7,15 +7,23 @@ static var BASE_UNITS = {
 enum BASE_UNIT_TYPE{
 	TRIBESMAN
 }
+enum BASE_UNIT_LAND_CLASS{
+	MELEE,
+	ANTIC,
+	REMOTE,
+	CAVAL,
+	RANGE,
+	DEFENCE
+}
 
 static func create_base_unit(base_unit_id, max_num=120, current_num=120, weapon_id_=0, armour_id_=0, vehicle_id_=null):
 	var base_unit = BASE_UNITS[base_unit_id].new()
 	base_unit.setup(max_num, current_num, weapon_id_, armour_id_, vehicle_id_)
 	return base_unit
 
-static func create_unit(base_units, faction, tile_pos=null, is_garrison_unit=false, general=null):
+static func create_unit(base_units, faction, tile_pos=null, garrison_city=null, general=null):
 	var unit = unit_scene.instantiate()
-	unit.setup(base_units, faction, tile_pos, is_garrison_unit, general)
+	unit.setup(base_units, faction, tile_pos, garrison_city, general)
 	if tile_pos != null:
 		GlobalConfig.tilemap.add_child(unit)	# 添加到场景中
 	return unit

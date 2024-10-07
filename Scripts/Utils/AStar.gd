@@ -21,19 +21,33 @@ var DefaultMovementCost = [
 	MAX_MOVEMENT_COST
 ]
 
-func _compute_cost(u, v):
+func _compute_cost(u, v):	# u是起点，v是终点
+	# 跟地图的形状有关系
+	# 必须注意，整个地图是向左凸起的，也就是有些单元格看起来应该是紧邻的，但实际不紧邻
+	# 比如(20， 19)和(21, 20)是直接可达的，但(22, 19)和(21, 20)却不是
 	var up = self.get_point_position(u)
 	var vp = self.get_point_position(v)
 	var uw = self.get_point_weight_scale(u)
-	var uv = self.get_point_weight_scale(v)
-	return  max(abs(up.x - vp.x), abs(up.y - vp.y)) + min(uw, uv)
+	var vw = self.get_point_weight_scale(v)
+	# 路径上所有节点的权重应该都纳入考量
+	if vp.x > up.x:
+		return vp.x - up.x + abs(up.y - vp.y) + vw
+	else:
+		return max(abs(up.x - vp.x), abs(up.y - vp.y)) + vw
 
 func _estimate_cost(u, v):
+	# 跟地图的形状有关系
+	# 必须注意，整个地图是向左凸起的，也就是有些单元格看起来应该是紧邻的，但实际不紧邻
+	# 比如(20， 19)和(21, 20)是直接可达的，但(22, 19)和(21, 20)却不是
 	var up = self.get_point_position(u)
 	var vp = self.get_point_position(v)
 	var uw = self.get_point_weight_scale(u)
-	var uv = self.get_point_weight_scale(v)
-	return  max(abs(up.x - vp.x), abs(up.y - vp.y)) + min(uw, uv)
+	var vw = self.get_point_weight_scale(v)
+	# 路径上所有节点的权重应该都纳入考量
+	if vp.x > up.x:
+		return vp.x - up.x + abs(up.y - vp.y) + vw
+	else:
+		return max(abs(up.x - vp.x), abs(up.y - vp.y)) + vw
 
 ###################
 func update_position(tile_position, new_w=-1):	# 由于视野改变，此地变得可见

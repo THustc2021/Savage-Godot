@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ck8jrkr80wc2j"]
+[gd_scene load_steps=7 format=3 uid="uid://ck8jrkr80wc2j"]
 
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_ltrro"]
 [ext_resource type="Script" path="res://Scripts/UIs/Unit/UnitAnalysis.gd" id="2_bh4ws"]
@@ -8,12 +8,19 @@
 font_size = 32
 outline_size = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_acrlg"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_hhl5u"]
+font_size = 24
+
 [node name="UnitAnalysis" type="Panel"]
+z_index = 20
 clip_contents = true
-custom_minimum_size = Vector2(880, 512)
-offset_left = 1200.0
+custom_minimum_size = Vector2(2000, 700)
+offset_left = 200.0
 offset_top = 200.0
-offset_right = 2000.0
+offset_right = 2200.0
 offset_bottom = 700.0
 theme_override_styles/panel = ExtResource("1_ltrro")
 script = ExtResource("2_bh4ws")
@@ -22,43 +29,72 @@ script = ExtResource("2_bh4ws")
 clip_contents = true
 custom_minimum_size = Vector2(860, 488)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -392.0
-offset_top = -242.0
-offset_right = 392.0
-offset_bottom = 242.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="Label" parent="Main"]
 clip_contents = true
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "单位战力分析"
 label_settings = SubResource("LabelSettings_epvhd")
+vertical_alignment = 1
 
 [node name="Content" type="HBoxContainer" parent="Main"]
 clip_contents = true
 custom_minimum_size = Vector2(860, 448)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="BaseInfo" type="VBoxContainer" parent="Main/Content"]
 clip_contents = true
-custom_minimum_size = Vector2(224, 430)
+custom_minimum_size = Vector2(800, 430)
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Main/Content"]
 clip_contents = true
-custom_minimum_size = Vector2(612, 430)
+custom_minimum_size = Vector2(1180, 430)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
 
-[node name="RadarMapAttack" type="Node2D" parent="Main/Content/PanelContainer"]
+[node name="Attack" type="VBoxContainer" parent="Main/Content/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="RadarMapAttack" type="Container" parent="Main/Content/PanelContainer/Attack"]
+custom_minimum_size = Vector2(600, 422)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
 script = ExtResource("2_mi344")
 
-[node name="RadarMapDefend" type="Node2D" parent="Main/Content/PanelContainer"]
-position = Vector2(312, 0)
+[node name="Label" type="Label" parent="Main/Content/PanelContainer/Attack"]
+layout_mode = 2
+text = "进攻时战斗力"
+label_settings = SubResource("LabelSettings_acrlg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Defend" type="VBoxContainer" parent="Main/Content/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="RadarMapDefend" type="Container" parent="Main/Content/PanelContainer/Defend"]
+custom_minimum_size = Vector2(600, 422)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
 script = ExtResource("2_mi344")
+
+[node name="Label" type="Label" parent="Main/Content/PanelContainer/Defend"]
+layout_mode = 2
+text = "防御时战斗力"
+label_settings = SubResource("LabelSettings_hhl5u")
+horizontal_alignment = 1
+vertical_alignment = 1

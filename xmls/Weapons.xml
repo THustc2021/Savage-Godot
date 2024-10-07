@@ -1,9 +1,6 @@
 
 <item id="FORK" image="fork_origin.png">
 	<name>农叉<name>
+	<type>Melee</type>
+	<acvalue>1</acvalue>
 </item>
-<!--
-<item>
-	<name></name>
-</item>
--->

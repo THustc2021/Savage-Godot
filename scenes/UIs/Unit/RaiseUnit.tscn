@@ -146,6 +146,8 @@ alignment = 1
 [node name="HSlider" type="HSlider" parent="Outer/Main"]
 layout_mode = 2
 size_flags_vertical = 8
+min_value = 1.0
+value = 1.0
 ticks_on_borders = true
 
 [node name="UnitTools" type="HBoxContainer" parent="Outer/Main"]

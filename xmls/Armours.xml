@@ -1,8 +1,4 @@
 <item id="ANIMALCLOTHING" image="AnimalClothing.png">
 	<name>兽衣<name>
+	<dcvalue>1</dcvalue>
 </item>
-<!--
-<item>
-	<name></name>
-</item>
--->
