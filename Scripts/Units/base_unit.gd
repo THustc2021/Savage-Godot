@@ -48,7 +48,7 @@ func set_outside_city():
 	collision_layer = 1
 	collision_mask = 1
 	
-func setup(base_units, faction, tilepos=null, in_city=null, general=null):
+func setup(base_units, faction, tilepos=null, in_city=null, general=null, movement_point_cost_ratio=0):
 	tilemap = GlobalConfig.tilemap
 	# 设置位置属性（未必会有）
 	if tilepos != null:	# 只是用作测试，未加入到场景，这种情况下不应该注册
@@ -121,7 +121,7 @@ func setup(base_units, faction, tilepos=null, in_city=null, general=null):
 	$"View".connect("area_entered", _record_known)
 	$"View".connect("body_entered", _record_known)
 	# 开启回合
-	self.on_turn_begin()
+	self.on_turn_begin(movement_point_cost_ratio)
 	
 func _record_known(obj):
 	if not obj.get("belonged_faction"):
@@ -137,8 +137,8 @@ func register_faction(faction):
 	$"Portrait".self_modulate = faction.faction_color
 	self.belonged_faction = faction
 	
-func on_turn_begin():
-	self.current_movement_point = movement_point
+func on_turn_begin(movement_point_cost_ratio=0):
+	self.current_movement_point = movement_point - movement_point * movement_point_cost_ratio
 
 func analyse_unit_strength(terrain_type):	# 评估单位战斗力
 	var sd_anti = {}	# "普通近战单位", "对抗骑兵单位", "远程攻击单位", "骑兵单位", "攻城单位", "防御设施"

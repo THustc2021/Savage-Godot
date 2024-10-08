@@ -21,9 +21,9 @@ static func create_base_unit(base_unit_id, max_num=120, current_num=120, weapon_
 	base_unit.setup(max_num, current_num, weapon_id_, armour_id_, vehicle_id_)
 	return base_unit
 
-static func create_unit(base_units, faction, tile_pos=null, garrison_city=null, general=null):
+static func create_unit(base_units, faction, tile_pos=null, garrison_city=null, general=null, raise_unit_movement_cost=0):
 	var unit = unit_scene.instantiate()
-	unit.setup(base_units, faction, tile_pos, garrison_city, general)
+	unit.setup(base_units, faction, tile_pos, garrison_city, general, raise_unit_movement_cost)
 	if tile_pos != null:
 		GlobalConfig.tilemap.add_child(unit)	# 添加到场景中
 	return unit

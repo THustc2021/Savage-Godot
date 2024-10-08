@@ -150,7 +150,7 @@ func _propose_target(ut, bu, bvcp):
 		# 在右侧展示
 		var cc = VBoxContainer.new()
 		var c = _unit_proposed_portrait.duplicate()
-		c.connect("draw", _draw_mask.bind(c, _proposed_base_unit.recruit_need_time))
+		c.connect("draw", _draw_mask.bind(c, int(_proposed_base_unit.recruit_need_time)))
 		c.connect("pressed", _cancel_this_unit.bind(cc, _proposed_base_unit))
 		cc.add_child(c)
 		var l = Label.new()

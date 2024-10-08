@@ -3,7 +3,7 @@ extends Node
 signal add_event(event_item)
 signal update_rightup(faction_)
 
-@export var allow_fog_of_war = true
+@export var allow_fog_of_war = false
 
 enum UNIT_STATE{
 	IDLE,

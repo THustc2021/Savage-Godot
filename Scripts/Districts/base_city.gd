@@ -100,8 +100,15 @@ func unit_leave_city(unit):
 			_current_outside_unit = garrison_unit[0]
 		else:
 			_current_outside_unit = null
+	else:
+		unit.set_outside_city()
 ##
 func command_raise_unit(proposed_unit_list, general=null):
-	var u = UnitManager.create_unit(proposed_unit_list, belonged_faction, tile_position, self, general)
-	set_unit_garrison(u)
-	return u
+	var recruit_need_time = []
+	for bu in proposed_unit_list:
+		recruit_need_time.append(bu.recruit_need_time)
+	recruit_need_time = recruit_need_time.max()
+	if int(recruit_need_time) == 0:
+		var u = UnitManager.create_unit(proposed_unit_list, belonged_faction, tile_position, self, general, recruit_need_time - int(recruit_need_time))
+		set_unit_garrison(u)
+		return u

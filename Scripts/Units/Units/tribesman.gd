@@ -6,7 +6,7 @@ func _init():
 	unit_portrait_path = "res://assets/Units/BaseUnit/TribeMan.png"
 	unit_base_name = "部落民"
 	unit_base_description = "无需维护费的基础单位，士气极低，懂得操作基础的武器"
-	recruit_need_time = 0	# 可以取决于数量
+	recruit_need_time = 0.5	# 可以取决于数量，小数部分代表影响的移动力
 
 	basic_morale = 3 # 基础士气
 	basic_close_hitting_strength = 1	# 近战攻击敌人的战斗力

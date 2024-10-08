@@ -29,6 +29,7 @@ func _choose_unit(event, unit, panel):
 		if ui_choose_unit_panel != null:	# 重置
 			ui_choose_unit_panel["theme_override_styles/panel"] = null
 		ui_choose_unit_panel = panel
+		GlobalConfig.select_unit(unit)
 
 func _analyse_unit():
 	if choose_unit:
