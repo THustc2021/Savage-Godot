@@ -18,7 +18,7 @@ extends Node
 
 @export var unit_list := []
 @export var city_list := []
-@export var view_manager = ViewManager.new()
+var view_manager = ViewManager.new()
 
 func setup(tribe_name_, astar_, set_faction_color=null, is_player_faction_=false):
 	#
@@ -50,3 +50,13 @@ func register_capital(district):
 	self.city_list.append(district)
 	self.view_manager.setup_view(district)
 	self.view_manager.setup_view_highlight()
+	
+func get_tiles_unreachable(unit):
+	var unreachable_tiles := []
+	for u in self.view_manager.current_see_units:
+		if u != unit:
+			unreachable_tiles.append(u.tile_position)
+	for c in self.view_manager.current_see_cities:
+		if c.belonged_faction != self:
+			unreachable_tiles.append(c.tile_position)
+	return unreachable_tiles

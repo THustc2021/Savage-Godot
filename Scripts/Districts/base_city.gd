@@ -47,11 +47,11 @@ func _record_known(obj):
 		if obj is Area2D and obj not in belonged_faction.known_cities:
 			belonged_faction.known_cities.append(obj)
 			belonged_faction.astar.update_position(obj.tile_position, AStar.MAX_MOVEMENT_COST)
-		# 放入到节点中去
-		if obj is CharacterBody2D and obj not in belonged_faction.view_manager.current_see_units:
-			belonged_faction.view_manager.current_see_units.append(obj)
-		if obj is Area2D and obj not in belonged_faction.view_manager.current_see_cities:
-			belonged_faction.view_manager.current_see_cities.append(obj)
+	# 放入到节点中去
+	if obj is CharacterBody2D and obj not in belonged_faction.view_manager.current_see_units:
+		belonged_faction.view_manager.current_see_units.append(obj)
+	if obj is Area2D and obj not in belonged_faction.view_manager.current_see_cities:
+		belonged_faction.view_manager.current_see_cities.append(obj)
 
 func _target_out(obj):
 	if obj in belonged_faction.view_manager.current_see_cities:

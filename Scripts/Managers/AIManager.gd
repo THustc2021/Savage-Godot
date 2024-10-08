@@ -22,7 +22,7 @@ func main(faction_containers, main_game, factions_ingame, tilemap):
 			for u in f.unit_list:
 				var target_tile = Vector2i(randi()%tilemap.map_width_tiles_num, randi()%tilemap.map_height_tiles_num)
 				# 判断是否合法移动
-				if target_tile in f.astar.valid_cells and not u.tile_position == target_tile:
+				if not u.tile_position == target_tile:
 					u.call_deferred("prepare_move", target_tile)
 					u.call_deferred("move")	# 这似乎是线程安全的
 				else:

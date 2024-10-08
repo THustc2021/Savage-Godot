@@ -79,6 +79,16 @@ func register_city(city):
 	self.city_list.append(city)
 	self.view_manager.setup_view(city)
 	self.view_manager.setup_view_highlight()
+
+func get_tiles_unreachable(unit):
+	var unreachable_tiles := []
+	for u in self.view_manager.current_see_units:
+		if u != unit:
+			unreachable_tiles.append(u.tile_position)
+	for c in self.view_manager.current_see_cities:
+		if c.belonged_faction != self:
+			unreachable_tiles.append(c.tile_position)
+	return unreachable_tiles
 	
 func turn_begin_technology():
 	# 更改科技进度

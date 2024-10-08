@@ -39,14 +39,10 @@ func _add_to_portrait(n):
 # 供城市端调用的接口，本地不调用（是否可见交给城市管理）
 func set_inside_city():
 	_current_inside_city = true
-	# 禁用碰撞
 	collision_layer = 0
-	collision_mask = 0
 func set_outside_city():
 	_current_inside_city = false
-	# 禁用碰撞
 	collision_layer = 1
-	collision_mask = 1
 	
 func setup(base_units, faction, tilepos=null, in_city=null, general=null, movement_point_cost_ratio=0):
 	tilemap = GlobalConfig.tilemap
@@ -135,11 +131,11 @@ func _record_known(obj):
 		if obj is Area2D and obj not in belonged_faction.known_cities:
 			belonged_faction.known_cities.append(obj)
 			belonged_faction.astar.update_position(obj.tile_position, AStar.MAX_MOVEMENT_COST)
-		# 放入到节点中去
-		if obj is CharacterBody2D and obj not in belonged_faction.view_manager.current_see_units:
-			belonged_faction.view_manager.current_see_units.append(obj)
-		if obj is Area2D and obj not in belonged_faction.view_manager.current_see_cities:
-			belonged_faction.view_manager.current_see_cities.append(obj)
+	# 放入到节点中去
+	if obj is CharacterBody2D and obj not in belonged_faction.view_manager.current_see_units:
+		belonged_faction.view_manager.current_see_units.append(obj)
+	if obj is Area2D and obj not in belonged_faction.view_manager.current_see_cities:
+		belonged_faction.view_manager.current_see_cities.append(obj)
 
 func _target_out(obj):
 	if obj in belonged_faction.view_manager.current_see_cities:
@@ -180,10 +176,25 @@ func analyse_unit_strength(terrain_type):	# 评估单位战斗力
 func prepare_move(clicked_tile):
 	path_found.clear()
 	world_path_found.clear()
-	path_found = self.belonged_faction.astar.find_path(tile_position, clicked_tile)
-	# 设置最终版本
-	path_found = self.belonged_faction.astar.seg_path(path_found, self.current_movement_point,
-													 self.movement_point)
+	
+	# 回避单位冲突的寻路算法
+	var invalid_tiles = self.belonged_faction.get_tiles_unreachable(self)
+	var update_tiles_tmp := []
+	var seg_res
+	while true:
+		path_found = self.belonged_faction.astar.find_path(tile_position, clicked_tile)
+		# 设置最终版本
+		seg_res = self.belonged_faction.astar.seg_path(path_found, self.current_movement_point,
+														 self.movement_point, invalid_tiles)
+		if seg_res[0]:
+			path_found = seg_res[1]
+			break
+		else: # 重新计算，直到找到路或者失败
+			update_tiles_tmp.append([seg_res[1], seg_res[2]])
+	# 重置astar
+	for ij in update_tiles_tmp:
+		self.belonged_faction.astar.update_position(ij[0], -1, ij[1])
+	
 	for node in path_found:
 		var tmp = []
 		for nodee in node:
@@ -218,9 +229,7 @@ func _physics_process(delta):
 	if target:
 		velocity = position.direction_to(target) * speed
 		if position.distance_to(target) > 5:
-			if move_and_slide():
-				# 发生碰撞后，强制到位
-				position = target
+			move_and_slide()
 		else:	
 			tile_position = tile_position_tmp
 			# 上一步的移动结束了，更新视野
@@ -241,8 +250,8 @@ func _physics_process(delta):
 				else:
 					self.current_movement_point = 0
 			# 检查当前是否处在非法位置
-			var collide_flag = check_position_valid()
-			if collide_flag:
+			var collide_flag = check_position_invalid()
+			if not collide_flag:
 				last_no_collide = tile_position
 			# we've reached current destination, get the next one (if any left)
 			if tile_path.size() > 0:
@@ -332,18 +341,14 @@ func check_in_city():
 		_current_in_city.unit_leave_city(self)
 		_current_in_city = null
 
-func check_position_valid():	# 这个是判断当前位置是否合法的
-	var collide_flag = false
+func check_position_invalid():	# 这个是判断当前位置是否合法的
 	for c in $"View".get_overlapping_areas():
 		if c.get("belonged_faction") and c.belonged_faction != belonged_faction and c.tile_position == tile_position:
-			collide_flag = true
-			break
-	if not collide_flag:
-		for u in $"View".get_overlapping_bodies():
-			if u.get("belonged_faction") and u.belonged_faction != belonged_faction and u.tile_position == tile_position:
-				collide_flag = true
-				break
-	return collide_flag
+			return true
+	for u in $"View".get_overlapping_bodies():
+		if u.get("belonged_faction") and u != self and u.tile_position == tile_position:
+			return true
+	return false
 		
 ### UI
 func _confirm_unit_attack():

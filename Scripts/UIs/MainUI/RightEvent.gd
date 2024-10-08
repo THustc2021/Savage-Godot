@@ -14,6 +14,7 @@ func show_event(event_item):
 		item.setup(event_item[0], event_item[1])
 		item.add_to_group("event_this_turn")
 		call_deferred("add_child", item)
+		await GlobalConfig.get_tree().create_timer(0.01).timeout
 		current_show_num += 1
 	else:
 		event_list_tmp.append(event_item)

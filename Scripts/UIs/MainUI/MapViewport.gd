@@ -11,8 +11,7 @@ func _unhandled_input(event):
 				# 显示移动线
 				var clicked_tile = tilemap.local_to_map(tilemap.get_global_mouse_position())	# 转为tile坐标
 				# 判断是否合法移动
-				if clicked_tile in GlobalConfig.factionManager.player_faction.astar.valid_cells \
-					and not u.tile_position == clicked_tile \
+				if not u.tile_position == clicked_tile \
 					and not u.current_movement_point == 0:
 					var pf = u.prepare_move(clicked_tile)
 					# draw line
@@ -47,8 +46,7 @@ func _unhandled_input(event):
 					pline.remove_this()
 					var clicked_tile = tilemap.local_to_map(tilemap.get_global_mouse_position())	# 转为tile坐标
 					# 判断是否合法移动
-					if clicked_tile in GlobalConfig.factionManager.player_faction.astar.valid_cells \
-						and not u.tile_position == clicked_tile:
+					if not u.tile_position == clicked_tile:
 						u.move()
 						# 移动完成后取消选中
 						u.unselected()
@@ -61,7 +59,7 @@ func _unhandled_input(event):
 		# 显示移动线
 		var clicked_tile = tilemap.local_to_map(tilemap.get_global_mouse_position())	# 转为tile坐标
 		# 判断是否合法移动
-		if clicked_tile in GlobalConfig.factionManager.player_faction.astar.valid_cells and not u.tile_position == clicked_tile:
+		if not u.tile_position == clicked_tile:
 			var pf = u.prepare_move(clicked_tile)
 			# draw line
 			pline.draw_this(pf, u.belonged_faction.faction_color)
