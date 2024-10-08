@@ -27,4 +27,6 @@ func main(faction_containers, main_game, factions_ingame, tilemap):
 					u.call_deferred("move")	# 这似乎是线程安全的
 				else:
 					print("AI need move OR out of area!")
+			# 等待UI更新
+			await GlobalConfig.get_tree().create_timer(0.1).timeout 
 	call_deferred("emit_signal", "next_turn_start")

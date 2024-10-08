@@ -120,6 +120,9 @@ func setup(base_units, faction, tilepos=null, in_city=null, general=null, moveme
 	connect("show_info", GlobalConfig.show_unit_info)
 	$"View".connect("area_entered", _record_known)
 	$"View".connect("body_entered", _record_known)
+	$"View".connect("area_exited", _target_out)
+	$"View".connect("body_exited", _target_out)
+	
 	# 开启回合
 	self.on_turn_begin(movement_point_cost_ratio)
 	
@@ -132,6 +135,17 @@ func _record_known(obj):
 		if obj is Area2D and obj not in belonged_faction.known_cities:
 			belonged_faction.known_cities.append(obj)
 			belonged_faction.astar.update_position(obj.tile_position, AStar.MAX_MOVEMENT_COST)
+		# 放入到节点中去
+		if obj is CharacterBody2D and obj not in belonged_faction.view_manager.current_see_units:
+			belonged_faction.view_manager.current_see_units.append(obj)
+		if obj is Area2D and obj not in belonged_faction.view_manager.current_see_cities:
+			belonged_faction.view_manager.current_see_cities.append(obj)
+
+func _target_out(obj):
+	if obj in belonged_faction.view_manager.current_see_cities:
+		belonged_faction.view_manager.current_see_cities.erase(obj)
+	elif obj in belonged_faction.view_manager.current_see_units:
+		belonged_faction.view_manager.current_see_units.erase(obj)
 
 func register_faction(faction):
 	$"Portrait".self_modulate = faction.faction_color
@@ -214,7 +228,10 @@ func _physics_process(delta):
 			self.belonged_faction.view_manager.setup_view_highlight()
 			if self.belonged_faction == GlobalConfig.factionManager.player_faction:
 				GlobalConfig.show_view()
-			# 
+			# 消极的策略，先移动再判断可否移动
+			# 积极的策略，先判断下一个位置和最终位置是否是可达的，如果可达，尝试移动到该位置，然后再判断下一个位置是否是可达的
+			# 一旦不可达，则立即停下，如果停下的位置不合法，则立即回退
+			# 下一部分是都会有的，即消耗掉上一步的移动力
 			var id = self.belonged_faction.astar.valid_dict.find_key(tile_position)
 			if id:
 				var need_movement_point = self.belonged_faction.astar.get_point_weight_scale(id)
@@ -223,9 +240,9 @@ func _physics_process(delta):
 					self.current_movement_point -= need_movement_point
 				else:
 					self.current_movement_point = 0
-			# 检查是否仍在发生碰撞
-			var collide_flag = move_and_collide(velocity*delta, true)	# 仅作检测	
-			if collide_flag == null:
+			# 检查当前是否处在非法位置
+			var collide_flag = check_position_valid()
+			if collide_flag:
 				last_no_collide = tile_position
 			# we've reached current destination, get the next one (if any left)
 			if tile_path.size() > 0:
@@ -266,7 +283,8 @@ func _physics_process(delta):
 			if self.belonged_faction == GlobalConfig.factionManager.player_faction:
 				GlobalConfig.show_view()
 			# 移动完全结束时，判断是否仍在城市内
-			check_in_city()
+			if target == null:
+				check_in_city()
 
 func _input_event(viewport, event, shape_idx):
 	if self.belonged_faction.is_player_faction:
@@ -306,12 +324,27 @@ func check_in_city():
 			and oa.tile_position == tile_position and oa != _current_in_city:
 			if _current_in_city:
 				_current_in_city.unit_leave_city(self)
+			_current_in_city = oa
 			oa.set_unit_garrison(self)
 			return
 	# 上面循环未返回，说明已经离开了城市
 	if _current_in_city:
 		_current_in_city.unit_leave_city(self)
+		_current_in_city = null
 
+func check_position_valid():	# 这个是判断当前位置是否合法的
+	var collide_flag = false
+	for c in $"View".get_overlapping_areas():
+		if c.get("belonged_faction") and c.belonged_faction != belonged_faction and c.tile_position == tile_position:
+			collide_flag = true
+			break
+	if not collide_flag:
+		for u in $"View".get_overlapping_bodies():
+			if u.get("belonged_faction") and u.belonged_faction != belonged_faction and u.tile_position == tile_position:
+				collide_flag = true
+				break
+	return collide_flag
+		
 ### UI
 func _confirm_unit_attack():
 	remove_child(attack_non_declare_confirmed)

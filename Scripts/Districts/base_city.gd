@@ -35,6 +35,8 @@ func setup(tilepos, faction):
 	$"AnimationPlayer".play("rotate_sprite")
 	$"View".connect("area_entered", _record_known)
 	$"View".connect("body_entered", _record_known)
+	$"View".connect("area_exited", _target_out)
+	$"View".connect("body_exited", _target_out)
 	
 func _record_known(obj):
 	if not obj.get("belonged_faction"):
@@ -45,6 +47,17 @@ func _record_known(obj):
 		if obj is Area2D and obj not in belonged_faction.known_cities:
 			belonged_faction.known_cities.append(obj)
 			belonged_faction.astar.update_position(obj.tile_position, AStar.MAX_MOVEMENT_COST)
+		# 放入到节点中去
+		if obj is CharacterBody2D and obj not in belonged_faction.view_manager.current_see_units:
+			belonged_faction.view_manager.current_see_units.append(obj)
+		if obj is Area2D and obj not in belonged_faction.view_manager.current_see_cities:
+			belonged_faction.view_manager.current_see_cities.append(obj)
+
+func _target_out(obj):
+	if obj in belonged_faction.view_manager.current_see_cities:
+		belonged_faction.view_manager.current_see_cities.erase(obj)
+	elif obj in belonged_faction.view_manager.current_see_units:
+		belonged_faction.view_manager.current_see_units.erase(obj)
 
 func register_faction(faction):
 	self.modulate = faction.faction_color

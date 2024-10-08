@@ -1,9 +1,11 @@
-extends Node
-
 class_name ViewManager
 
 var view_tile_list = []
 var view_highlight_tile_list = []
+
+# 以下两个列表，都在有视野的节点中更新
+var current_see_units := []	
+var current_see_cities := []
 
 var belonged_faction
 
