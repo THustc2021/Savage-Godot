@@ -120,7 +120,7 @@ func show_faction_info():
 func remove_current_main(remove_unit_info=true):
 	if not remove_unit_info and Unit_Info_Panel == current_main_panel:
 		return
-	if Unit_Info_Panel != null:
+	if Unit_Info_Panel != null and remove_unit_info:
 		if Unit_Info_Panel != current_main_panel:
 			$"../Main".remove_child(Unit_Info_Panel)
 			Unit_Info_Panel.call_deferred("free")
@@ -128,7 +128,10 @@ func remove_current_main(remove_unit_info=true):
 	if current_main_panel != null:
 		$"../Main".remove_child(current_main_panel)
 		current_main_panel.call_deferred("free")
-	current_main_panel = null
+	if Unit_Info_Panel != null:
+		current_main_panel = Unit_Info_Panel
+	else:
+		current_main_panel = null
 
 func show_technology_info():
 	if current_main_panel != null:

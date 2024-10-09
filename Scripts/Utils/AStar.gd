@@ -30,10 +30,10 @@ func _compute_cost(u, v):	# u是起点，v是终点
 	var uw = self.get_point_weight_scale(u)
 	var vw = self.get_point_weight_scale(v)
 	# 路径上所有节点的权重应该都纳入考量
-	if vp.x > up.x:
-		return vp.x - up.x + abs(up.y - vp.y) + vw
-	else:
-		return max(abs(up.x - vp.x), abs(up.y - vp.y)) + vw
+	#if vp.x > up.x:
+		#return vp.x - up.x + abs(up.y - vp.y) + vw
+	#else:
+	return max(abs(up.x - vp.x), abs(up.y - vp.y)) + vw
 
 func _estimate_cost(u, v):
 	# 跟地图的形状有关系
@@ -44,10 +44,10 @@ func _estimate_cost(u, v):
 	var uw = self.get_point_weight_scale(u)
 	var vw = self.get_point_weight_scale(v)
 	# 路径上所有节点的权重应该都纳入考量
-	if vp.x > up.x:
-		return vp.x - up.x + abs(up.y - vp.y) + vw
-	else:
-		return max(abs(up.x - vp.x), abs(up.y - vp.y)) + vw
+	#if vp.x > up.x:
+		#return vp.x - up.x + abs(up.y - vp.y) + vw
+	#else:
+	return max(abs(up.x - vp.x), abs(up.y - vp.y)) + vw
 
 ###################
 func update_position(tile_position:Vector2i, new_w=-1, o_id=-1):	# 由于视野改变，此地变得可见
@@ -93,7 +93,7 @@ func cal_weighted_path(p, flag):	# 计算带权移动路径长度
 
 func seg_path(p, current_movement_point, movement_point, invalid_tiles):	# 根据移动力大小拆分路径
 	# 注意p为空的情况
-	if len(p) == 0:
+	if len(p) == 0 or Vector2i(p[-1]) in invalid_tiles:
 		return [true, [[]]]
 	# 输入应该带起点的路径
 	var mov_paths = []
@@ -133,10 +133,8 @@ func seg_path(p, current_movement_point, movement_point, invalid_tiles):	# 根�
 			pl += l
 		pi += 1	# 更新指针
 	if pi == len(p):	# 已经指到末尾，若目的地为不合法，则取消移动；若为空集，也不移动
-		if len(mov_path) != 0 and Vector2i(mov_path[-1]) not in invalid_tiles:
+		if len(mov_path) != 0:
 			mov_paths.append(mov_path)
-		else:
-			mov_paths.append([])
 	else:
 		for pii in range(pi, len(p)):
 			var pp = p[pii]
@@ -157,6 +155,7 @@ func find_path(from : Vector2, to : Vector2) -> Array:
 	var y = valid_dict.find_key(Vector2i(to))
 	if y == null:
 		return []
+	print(from, ",", to)
 	var path_list = self.get_id_path(x, y)
 	var path = []
 	for i in path_list:

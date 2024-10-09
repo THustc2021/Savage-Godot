@@ -14,4 +14,4 @@ func setup(unit):	# 单位作为分析对象
 	ui_Radar_Defend.data = res[1].values()
 
 func _close():
-	GlobalConfig.remove_current_main()
+	GlobalConfig.remove_current_main(false)
