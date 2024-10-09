@@ -1,8 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://ck8jrkr80wc2j"]
+[gd_scene load_steps=8 format=3 uid="uid://ck8jrkr80wc2j"]
 
-[ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_ltrro"]
 [ext_resource type="Script" path="res://Scripts/UIs/Unit/UnitAnalysis.gd" id="2_bh4ws"]
 [ext_resource type="Script" path="res://Scripts/UIs/Utils/RadarMap.gd" id="2_mi344"]
+[ext_resource type="Texture2D" uid="uid://dkh5y4tq583ui" path="res://assets/UI/close_button.png" id="4_oiboo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tgsb6"]
+bg_color = Color(0.403922, 0.815686, 0.815686, 0.501961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.790288, 0.791427, 0.880215, 1)
+shadow_color = Color(0.326158, 0.359354, 0.616655, 0.6)
+shadow_size = 3
 
 [sub_resource type="LabelSettings" id="LabelSettings_epvhd"]
 font_size = 32
@@ -16,13 +26,12 @@ font_size = 24
 
 [node name="UnitAnalysis" type="Panel"]
 z_index = 20
-clip_contents = true
 custom_minimum_size = Vector2(2000, 700)
 offset_left = 200.0
 offset_top = 200.0
 offset_right = 2200.0
 offset_bottom = 700.0
-theme_override_styles/panel = ExtResource("1_ltrro")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tgsb6")
 script = ExtResource("2_bh4ws")
 
 [node name="Main" type="VBoxContainer" parent="."]
@@ -98,3 +107,21 @@ text = "防御时战斗力"
 label_settings = SubResource("LabelSettings_hhl5u")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 0
+pivot_offset = Vector2(25, 25)
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_oiboo")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="pressed" from="TextureButton" to="." method="_close"]

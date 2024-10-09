@@ -1,11 +1,8 @@
 extends Panel
 
-var offset_unit_panel
-
 @onready var _ui_baseunits = $"Outer/UnitPanel/ScrollContainer/BaseUnits"
 
 func _ready():
-	offset_unit_panel = get_rect().position + Vector2(288, 40)
 	var cicon = GlobalConfig.selected_unit.commander.icon.duplicate()
 	cicon.anchors_preset = PRESET_CENTER
 	cicon.self_modulate = Color(0.5, 0.5, 0.5, 1)

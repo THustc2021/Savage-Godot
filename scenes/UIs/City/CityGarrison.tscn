@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_4ve1i"]
 [ext_resource type="Script" path="res://Scripts/UIs/City/CityGarrison.gd" id="2_8s6wh"]
-[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_koor0"]
+[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_3vh8y"]
 
 [sub_resource type="Theme" id="Theme_fgcap"]
 HBoxContainer/constants/separation = 16
@@ -19,9 +19,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1000.0
-offset_top = -260.0
+offset_top = -292.0
 offset_right = 1000.0
-offset_bottom = 28.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_fgcap")
@@ -39,7 +39,7 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Down" type="PanelContainer" parent="Main"]
-custom_minimum_size = Vector2(1968, 256)
+custom_minimum_size = Vector2(1968, 288)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_4ve1i")
 
@@ -48,9 +48,9 @@ custom_minimum_size = Vector2(2000, 256)
 layout_mode = 2
 alignment = 1
 
-[node name="Panel" type="PanelContainer" parent="Main/Down/Main"]
+[node name="Panel" type="Panel" parent="Main/Down/Main"]
 clip_contents = true
-custom_minimum_size = Vector2(224, 192)
+custom_minimum_size = Vector2(224, 256)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -59,6 +59,8 @@ mouse_filter = 1
 [node name="Inner" type="VBoxContainer" parent="Main/Down/Main/Panel"]
 custom_minimum_size = Vector2(224, 230)
 layout_mode = 2
+offset_right = 224.0
+offset_bottom = 256.0
 alignment = 1
 
 [node name="Basic" type="HBoxContainer" parent="Main/Down/Main/Panel/Inner"]
@@ -121,22 +123,25 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "分析当前部队"
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("3_koor0")
+texture_normal = ExtResource("3_3vh8y")
 ignore_texture_size = true
 stretch_mode = 0
 
 [node name="UnitPanel" type="PanelContainer" parent="Main/Down/Main"]
+custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 7.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Main/Down/Main/UnitPanel"]
-custom_minimum_size = Vector2(1728, 230)
+custom_minimum_size = Vector2(1728, 256)
 layout_mode = 2
 vertical_scroll_mode = 0
 
 [node name="BaseUnits" type="HBoxContainer" parent="Main/Down/Main/UnitPanel/ScrollContainer"]
 clip_contents = true
-custom_minimum_size = Vector2(1728, 230)
+custom_minimum_size = Vector2(1728, 256)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

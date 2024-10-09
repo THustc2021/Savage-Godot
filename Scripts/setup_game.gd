@@ -95,6 +95,11 @@ func on_turn_start():
 	GlobalConfig.player_turn = true
 	GlobalConfig.factionManager.player_faction.on_turn_begin()
 	$"RightDown/NextTurn".disabled = false
+	# 开启所有城市和单位的选择
+	for u in factionManager.player_faction.unit_list:
+		u.input_pickable = true
+	for c in factionManager.player_faction.city_list:
+		c.input_pickable = true
 	$"RightDown/TurnNum".text = str(GlobalConfig.turn_num)
 	$"RightUp".setup_this_turn()
 	$"RightEvent".on_turn_begin()
@@ -102,6 +107,11 @@ func on_turn_start():
 func on_turn_end():
 	GlobalConfig.player_turn = false
 	$"RightDown/NextTurn".disabled = true
+	# 禁止所有城市和单位的选择
+	for u in factionManager.player_faction.unit_list:
+		u.input_pickable = false
+	for c in factionManager.player_faction.city_list:
+		c.input_pickable = false
 	$"RightEvent".on_player_turn_end()
 	
 func on_game_start():

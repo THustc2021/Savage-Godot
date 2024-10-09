@@ -2,12 +2,14 @@ extends Container
 
 var choosable_units
 var choose_unit
+var last_choose_unit
 var ui_choose_unit_panel
 var _city
 
 @onready var uppercontainer = $"Main/Upper/Main"
 
 @onready var DownMain = $"Main/Down/Main"
+@onready var ui_unit_panel = $"Main/Down/Main/Panel"
 @onready var ui_baseunits = $"Main/Down/Main/UnitPanel/ScrollContainer/BaseUnits"
 @onready var ui_analysebutton = $"Main/Down/Main/Panel/Inner/Analyse"
 @onready var ui_commander_name = $"Main/Down/Main/Panel/Inner/Basic/CommanderName"
@@ -24,7 +26,7 @@ func setup(city):
 	_reset_upper()
 
 func _choose_unit(event, unit, panel):
-	if event is InputEventMouse and event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed() and choose_unit != unit:
 		choose_unit = unit
 		if ui_choose_unit_panel != null:	# 重置
 			ui_choose_unit_panel["theme_override_styles/panel"] = null
@@ -65,7 +67,7 @@ func _reset_upper():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if GlobalConfig.selected_city != _city:
+	if GlobalConfig.selected_city != _city or len(choosable_units) == 0:
 		GlobalConfig.remove_current_main()
 		return
 	if len(choosable_units) != len(_city.garrison_unit) or choose_unit not in choosable_units:	# 发生改变，重置之
@@ -73,35 +75,43 @@ func _process(_delta):
 		choose_unit = null
 		ui_choose_unit_panel = null
 	if choose_unit != null:
-		# 设置选中
-		ui_choose_unit_panel["theme_override_styles/panel"] = StyleBoxFlat.new()
-		ui_choose_unit_panel["theme_override_styles/panel"].bg_color = Color(0, 0, 0, 0)
-		ui_choose_unit_panel["theme_override_styles/panel"].border_width_left = 3
-		ui_choose_unit_panel["theme_override_styles/panel"].border_width_top = 3
-		ui_choose_unit_panel["theme_override_styles/panel"].border_width_bottom = 3
-		ui_choose_unit_panel["theme_override_styles/panel"].border_width_right = 3
-		ui_choose_unit_panel["theme_override_styles/panel"].border_color = Color(0, 1, 0, 1)
-		# 下方的内容
-		DownMain.visible = true
-		ui_commander_name.text = choose_unit.commander.general_name
-		if choose_unit.current_state == GlobalConfig.UNIT_STATE.IDLE:
-			ui_unit_state.text = "空闲"
-		elif choose_unit.current_state == GlobalConfig.UNIT_STATE.SETTLE:
-			ui_unit_state.text = "驻扎"
-		elif choose_unit.current_state == GlobalConfig.UNIT_STATE.COLLECT:
-			ui_unit_state.text = "收集"
-		ui_movement_point.text = "移动力：" + str(choose_unit.current_movement_point) \
-												+ "/" + str(choose_unit.movement_point)
-		ui_supplement_progressbar.max_value = choose_unit.supplement
-		ui_supplement_progressbar.value = choose_unit.current_supplement
-		ui_number_progressbar.max_value = choose_unit.max_total_soldiers_num
-		ui_number_progressbar.value = choose_unit.current_total_soldiers_num
-		#显示基本单位
-		for c in ui_baseunits.get_children():
-			c.queue_free()
-		for bu in choose_unit.current_unit_list:
-			var v = bu.get_portrait()
-			ui_baseunits.add_child(v)
+		if choose_unit != last_choose_unit:
+			last_choose_unit = choose_unit
+			# 设置选中
+			ui_choose_unit_panel["theme_override_styles/panel"] = StyleBoxFlat.new()
+			ui_choose_unit_panel["theme_override_styles/panel"].bg_color = Color(0, 0, 0, 0)
+			ui_choose_unit_panel["theme_override_styles/panel"].border_width_left = 3
+			ui_choose_unit_panel["theme_override_styles/panel"].border_width_top = 3
+			ui_choose_unit_panel["theme_override_styles/panel"].border_width_bottom = 3
+			ui_choose_unit_panel["theme_override_styles/panel"].border_width_right = 3
+			ui_choose_unit_panel["theme_override_styles/panel"].border_color = Color(0, 1, 0, 1)
+			# 下方的内容
+			DownMain.visible = true
+			ui_commander_name.text = choose_unit.commander.general_name
+			var cicon = choose_unit.commander.icon.duplicate()
+			cicon.anchors_preset = PRESET_CENTER
+			cicon.self_modulate = Color(0.5, 0.5, 0.5, 1)
+			cicon.scale = Vector2(4, 4)
+			ui_unit_panel.add_child(cicon)
+			ui_unit_panel.move_child(cicon, 0)
+			if choose_unit.current_state == GlobalConfig.UNIT_STATE.IDLE:
+				ui_unit_state.text = "空闲"
+			elif choose_unit.current_state == GlobalConfig.UNIT_STATE.SETTLE:
+				ui_unit_state.text = "驻扎"
+			elif choose_unit.current_state == GlobalConfig.UNIT_STATE.COLLECT:
+				ui_unit_state.text = "收集"
+			ui_movement_point.text = "移动力：" + str(choose_unit.current_movement_point) \
+													+ "/" + str(choose_unit.movement_point)
+			ui_supplement_progressbar.max_value = choose_unit.supplement
+			ui_supplement_progressbar.value = choose_unit.current_supplement
+			ui_number_progressbar.max_value = choose_unit.max_total_soldiers_num
+			ui_number_progressbar.value = choose_unit.current_total_soldiers_num
+			#显示基本单位
+			for c in ui_baseunits.get_children():
+				c.queue_free()
+			for bu in choose_unit.current_unit_list:
+				var v = bu.get_portrait()
+				ui_baseunits.add_child(v)
 	else:
 		# 清空所有内容
 		DownMain.visible = false

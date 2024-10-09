@@ -9,3 +9,6 @@ func _process(_delta):
 		$"Main/Title/Population/Label2".text = str(city.population)
 	else:
 		GlobalConfig.remove_current_main()
+		
+func _close():
+	GlobalConfig.remove_current_main()

@@ -1,11 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxi36udc2i2fa"]
+[gd_scene load_steps=5 format=3 uid="uid://cxi36udc2i2fa"]
 
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_5tv7s"]
 [ext_resource type="Script" path="res://Scripts/UIs/Unit/UnitInfoPanel.gd" id="2_pl8qk"]
-[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_dsn51"]
-[ext_resource type="Texture2D" uid="uid://dfwkqqb4bkjr6" path="res://assets/UI/Collect.png" id="3_lqfgd"]
-[ext_resource type="Texture2D" uid="uid://478gds0ugqsb" path="res://assets/UI/Collect_pressed.png" id="4_3vpby"]
-[ext_resource type="Texture2D" uid="uid://duulk5fhdon7j" path="res://assets/UI/Garrison.png" id="5_p07gl"]
+[ext_resource type="Texture2D" uid="uid://dhl1c4bie647p" path="res://assets/UI/analysis.png" id="3_8jnws"]
 
 [sub_resource type="Theme" id="Theme_fgcap"]
 HBoxContainer/constants/separation = 16
@@ -47,8 +44,6 @@ layout_mode = 2
 tooltip_text = "采集"
 toggle_mode = true
 keep_pressed_outside = true
-texture_normal = ExtResource("3_lqfgd")
-texture_pressed = ExtResource("4_3vpby")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -56,8 +51,6 @@ stretch_mode = 0
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 tooltip_text = "驻扎"
-texture_normal = ExtResource("5_p07gl")
-texture_pressed = ExtResource("5_p07gl")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -155,7 +148,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "分析当前部队"
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("3_dsn51")
+texture_normal = ExtResource("3_8jnws")
 ignore_texture_size = true
 stretch_mode = 0
 
