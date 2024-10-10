@@ -26,7 +26,7 @@ var can_recruit_unit_faction := []
 var avail_weapon_faction := []
 var avail_armour_faction := []
 var avail_vehicle_faction := []
-var max_base_unit_number = 120
+var max_base_unit_number = 30
 
 var tech_researched := []	# 已经完成研究的科技
 var tech_in_research := []	# 正在进行研究的科技

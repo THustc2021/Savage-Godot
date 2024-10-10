@@ -16,7 +16,7 @@ enum BASE_UNIT_LAND_CLASS{
 	DEFENCE
 }
 
-static func create_base_unit(base_unit_id, max_num=120, current_num=120, weapon_id_=0, armour_id_=0, vehicle_id_=null):
+static func create_base_unit(base_unit_id, max_num=30, current_num=30, weapon_id_=0, armour_id_=0, vehicle_id_=null):
 	var base_unit = BASE_UNITS[base_unit_id].new()
 	base_unit.setup(max_num, current_num, weapon_id_, armour_id_, vehicle_id_)
 	return base_unit

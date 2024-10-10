@@ -9,6 +9,8 @@ var city_name = "蛮族哨所"
 var population = 200
 var can_fight_population = 120	# 能够作战的总人口
 var can_useto_fight_ratio = 0.1	# 当城市受到攻击时，能将可用作战人口用于防御的比例
+var population_composition := {}
+
 var can_recruit_unit_type := []	# 此城能够招募的部队类型
 var avail_weapon := []
 var avail_armour := []
@@ -62,6 +64,7 @@ func _target_out(obj):
 func register_faction(faction):
 	self.modulate = faction.faction_color
 	self.belonged_faction = faction
+	self.population_composition[faction] = population
 
 func recruit_unit():	# 在此城征集单位
 	if city_recruit_scene != null:

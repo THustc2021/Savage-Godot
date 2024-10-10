@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://qvoe8wd80fk1"]
+
+[ext_resource type="Script" path="res://Scripts/UIs/Utils/MSProgressbar.gd" id="1_e40i7"]
+
+[node name="MsProgressbar" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_e40i7")
+
+[node name="TooltipLabel" type="Label" parent="."]
+z_index = 1
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
