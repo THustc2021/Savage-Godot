@@ -1,0 +1,313 @@
+[gd_scene load_steps=13 format=3 uid="uid://bxh7htwnxeovb"]
+
+[ext_resource type="Script" path="res://Scripts/UIs/MainUI/Battle.gd" id="1_wc11u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osjsa"]
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eggbu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8fjon"]
+font_size = 32
+font_color = Color(0, 0, 0.87451, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dr75m"]
+font_size = 24
+outline_size = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_x6r8u"]
+font_size = 24
+font_color = Color(0.615686, 0.780392, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5lcy"]
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p0l25"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gknph"]
+font_size = 32
+font_color = Color(0.87451, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j5871"]
+font_size = 24
+outline_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n5sdo"]
+bg_color = Color(0.87451, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oj6wq"]
+bg_color = Color(0, 0, 0.87451, 1)
+
+[node name="Battle" type="ConfirmationDialog"]
+title = "战斗"
+initial_position = 2
+size = Vector2i(1016, 457)
+visible = true
+exclusive = false
+unresizable = true
+ok_button_text = "战斗"
+dialog_autowrap = true
+cancel_button_text = "撤退"
+script = ExtResource("1_wc11u")
+
+[node name="Main" type="Panel" parent="."]
+custom_minimum_size = Vector2(1000, 400)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 8.0
+offset_right = 500.0
+offset_bottom = 408.0
+grow_horizontal = 2
+
+[node name="Player" type="Panel" parent="Main"]
+custom_minimum_size = Vector2(388, 356)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 408.0
+offset_bottom = 376.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_osjsa")
+
+[node name="Icon" type="Panel" parent="Main/Player"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -60.0
+offset_right = 140.0
+offset_bottom = 60.0
+grow_vertical = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_eggbu")
+
+[node name="Faction" type="Label" parent="Main/Player"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 20.0
+offset_right = 236.0
+offset_bottom = 65.0
+grow_horizontal = 2
+text = "部落"
+label_settings = SubResource("LabelSettings_8fjon")
+
+[node name="General" type="Label" parent="Main/Player"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 6.0
+offset_top = -78.0
+offset_right = 386.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "将军"
+label_settings = SubResource("LabelSettings_dr75m")
+
+[node name="Unit" type="Label" parent="Main/Player"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 6.0
+offset_top = -28.0
+offset_right = 386.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "军事力量"
+
+[node name="Prob" type="VBoxContainer" parent="Main"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -150.0
+offset_right = 48.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Main/Prob"]
+layout_mode = 2
+text = "胜率预测"
+label_settings = SubResource("LabelSettings_x6r8u")
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Main/Prob"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "史诗大捷："
+
+[node name="W1" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "酣畅大胜："
+
+[node name="W2" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "略占上风："
+
+[node name="W3" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "平局："
+
+[node name="M" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="Label9" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "略占下风："
+
+[node name="L1" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="Label11" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "丢盔弃甲："
+
+[node name="L2" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="Label13" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+text = "一败涂地："
+
+[node name="L3" type="Label" parent="Main/Prob/GridContainer"]
+layout_mode = 2
+
+[node name="AI" type="Panel" parent="Main"]
+custom_minimum_size = Vector2(388, 356)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -408.0
+offset_top = -180.0
+offset_right = -20.0
+offset_bottom = 176.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p5lcy")
+
+[node name="Icon" type="Panel" parent="Main/AI"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_p0l25")
+
+[node name="Faction" type="Label" parent="Main/AI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 20.0
+offset_right = 236.0
+offset_bottom = 65.0
+grow_horizontal = 2
+text = "部落"
+label_settings = SubResource("LabelSettings_gknph")
+
+[node name="General" type="Label" parent="Main/AI"]
+custom_minimum_size = Vector2(238, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -78.0
+offset_right = 286.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "将军"
+label_settings = SubResource("LabelSettings_j5871")
+
+[node name="Unit" type="Label" parent="Main/AI"]
+layout_mode = 2
+offset_left = 100.0
+offset_top = 150.0
+offset_right = 480.0
+offset_bottom = 173.0
+text = "军事力量"
+
+[node name="StrengthComp" type="VBoxContainer" parent="Main"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -68.0
+offset_right = 32.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="Main" type="ProgressBar" parent="Main/StrengthComp"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_n5sdo")
+theme_override_styles/fill = SubResource("StyleBoxFlat_oj6wq")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[node name="Label" type="Label" parent="Main/StrengthComp"]
+layout_mode = 2
+text = "力量对比"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="canceled" from="." to="." method="_on_canceled"]
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]

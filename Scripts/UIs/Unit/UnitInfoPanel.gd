@@ -3,12 +3,7 @@ extends Panel
 @onready var _ui_baseunits = $"Outer/UnitPanel/ScrollContainer/BaseUnits"
 
 func _ready():
-	var cicon = GlobalConfig.selected_unit.commander.icon.duplicate()
-	cicon.anchors_preset = PRESET_CENTER
-	cicon.self_modulate = Color(0.5, 0.5, 0.5, 1)
-	cicon.scale = Vector2(4, 4)
-	$"Outer/Panel".add_child(cicon)
-	$"Outer/Panel".move_child(cicon, 0)
+	GlobalConfig.selected_unit.commander.add_portrait_to_node($"Outer/Panel")
 	$"Outer/Panel/Inner/Analyse".connect("pressed", GlobalConfig.show_unit_analysis.bind(GlobalConfig.selected_unit))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

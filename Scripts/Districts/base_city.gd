@@ -65,6 +65,10 @@ func register_faction(faction):
 	self.modulate = faction.faction_color
 	self.belonged_faction = faction
 	self.population_composition[faction] = population
+	
+func modify_fight_population(update_value):
+	can_fight_population += update_value
+	population += update_value
 
 func recruit_unit():	# 在此城征集单位
 	if city_recruit_scene != null:
@@ -132,5 +136,5 @@ func command_raise_unit(proposed_unit_list, general=null):
 		else:
 			var u = UnitManager.create_unit(proposed_unit_list, belonged_faction, tile_position, self, general, recruit_need_time - int(recruit_need_time))
 			set_unit_garrison(u)
-			can_fight_population -= recruit_need_number
+			modify_fight_population(-recruit_need_number)
 			return u

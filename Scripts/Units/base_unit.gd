@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name unit
+
 @onready var target
 @onready var tilemap
 
@@ -15,9 +17,10 @@ var world_path = []  # of global coordinates
 var path_found = []	
 var world_path_found = []
 var last_no_collide	# 用于储存移动过程中发生碰撞的坐标
+var attack_target	# 目标进攻对象
 
-@export var movement_point = 2
-@export var supplement = 1
+var movement_point = 2
+var supplement = 1
 var max_total_soldiers_num := 0
 
 var belonged_faction
@@ -153,6 +156,7 @@ func on_turn_begin(movement_point_cost_ratio=0):
 func analyse_unit_strength(terrain_type):	# 评估单位战斗力
 	var sd_anti = {}	# "普通近战单位", "对抗骑兵单位", "远程攻击单位", "骑兵单位", "攻城单位", "防御设施"
 	var sd_defe = {}	# 各项单位自身的战力，上面是对抗这些单位时的战力
+	var unit_composition = {}	# 单位占比
 	var res
 	var sd_anti_b
 	var sd_defe_b
@@ -170,15 +174,21 @@ func analyse_unit_strength(terrain_type):	# 评估单位战斗力
 				sd_defe[i] += sd_defe_b[i]
 			else:
 				sd_defe[i] = sd_defe_b[i]
-	return [sd_anti, sd_defe]
+		if unit_composition.get(bu.current_type):
+			unit_composition[bu.current_type] += bu.current_num / current_total_soldiers_num
+		else:
+			unit_composition[bu.current_type] = bu.current_num / current_total_soldiers_num
+	return [sd_anti, sd_defe, unit_composition]
 
 # 修改坐标后建立寻路列表
-func prepare_move(clicked_tile):
+func prepare_move(clicked_tile, erase_invalid_tile=null):
 	path_found.clear()
 	world_path_found.clear()
 	
 	# 回避单位冲突的寻路算法
 	var invalid_tiles = self.belonged_faction.get_tiles_unreachable(self)
+	if erase_invalid_tile:
+		invalid_tiles.erase(Vector2i(erase_invalid_tile))
 	var update_tiles_tmp := []
 	var seg_res
 	while true:
@@ -347,7 +357,11 @@ func check_position_invalid():	# 这个是判断当前位置是否合法的
 			return true
 	for u in $"View".get_overlapping_bodies():
 		if u.get("belonged_faction") and u != self and u.tile_position == tile_position:
-			return true
+			if u == attack_target:
+				UnitManager.fight_battle(self, u, tilemap.grid[tile_position.x][tile_position.y])
+				return true
+			else:
+				return true
 	return false
 		
 ### UI
@@ -364,4 +378,12 @@ func _cancel_unit_attack():
 
 ##################### command
 func command_attack_unit(u):
-	print("进攻单位")
+	var p = prepare_move(u.tile_position, u.tile_position)
+	# 如果是当前可达的
+	if len(path_found) <= 1:
+		attack_target = u
+		move()
+	else:
+		# 新任务清空
+		path_found.clear()	# 终止移动
+		world_path_found.clear()	

@@ -13,3 +13,11 @@ func _init():
 	
 	icon = icon_scene.instantiate()
 	icon.setup()
+	
+func add_portrait_to_node(node):
+	var cicon = icon.duplicate()
+	cicon.anchors_preset = Control.PRESET_CENTER
+	cicon.self_modulate = Color(0.5, 0.5, 0.5, 1)
+	cicon.scale = Vector2(4, 4)
+	node.add_child(cicon)
+	node.move_child(cicon, 0)
