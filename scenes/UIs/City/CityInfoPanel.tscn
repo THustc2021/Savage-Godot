@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://5oirsg1xck85"]
+[gd_scene load_steps=8 format=3 uid="uid://5oirsg1xck85"]
 
 [ext_resource type="Script" path="res://Scripts/UIs/City/CityInfoPanel.gd" id="1_cyjey"]
 [ext_resource type="StyleBox" uid="uid://dqqhus4xjfg22" path="res://themes/panel.tres" id="1_e1wb8"]
-[ext_resource type="Texture2D" uid="uid://dkh5y4tq583ui" path="res://assets/UI/close_button.png" id="3_o5mlm"]
 
 [sub_resource type="Theme" id="Theme_q723h"]
 
@@ -152,7 +151,6 @@ offset_bottom = 25.0
 grow_horizontal = 0
 pivot_offset = Vector2(25, 25)
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("3_o5mlm")
 ignore_texture_size = true
 stretch_mode = 0
 

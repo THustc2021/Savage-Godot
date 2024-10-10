@@ -24,7 +24,7 @@ func setup(data_):
 	self.data = data_
 
 func _draw():
-	if data != null:
+	if data != null and len(data):
 		# 生成六边形顶点
 		var points = []
 		var dmax = data.max() 

@@ -38,7 +38,8 @@ func _ready():
 		var stp = Vector2i(randi() % tilemap.map_width_tiles_num, randi() % tilemap.map_height_tiles_num)
 		if stp in tilemap.valid_cells:	# 检查坐标合法性，不合法返回空
 			warehouse_p = DistrictManager.create_district(0, stp, player_tribe)
-			barbarian_p = warehouse_p.command_raise_unit([UnitManager.create_base_unit(0)])
+			barbarian_p = UnitManager.create_unit([UnitManager.create_base_unit(0)], player_tribe, stp, warehouse_p)
+			warehouse_p.set_unit_garrison(barbarian_p)
 			stps.append(stp)
 
 	# 设置相机位置
@@ -61,7 +62,8 @@ func _ready():
 						break
 				if flag:
 					warehouse_pp = DistrictManager.create_district(0, stp, tribe)
-					barbarian_pp = warehouse_pp.command_raise_unit([UnitManager.create_base_unit(0)])
+					barbarian_pp = UnitManager.create_unit([UnitManager.create_base_unit(0)], tribe, stp, warehouse_pp)
+					warehouse_pp.set_unit_garrison(barbarian_pp)
 					stps.append(stp)
 	
 	$"MainInfoPanel/MainInfo/FactionButton".connect("pressed", GlobalConfig.show_faction_info)

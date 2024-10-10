@@ -118,10 +118,16 @@ func unit_leave_city(unit):
 ##
 func command_raise_unit(proposed_unit_list, general=null):
 	var recruit_need_time = []
+	var recruit_need_number = 0
 	for bu in proposed_unit_list:
 		recruit_need_time.append(bu.recruit_need_time)
+		recruit_need_number += bu.current_num
 	recruit_need_time = recruit_need_time.max()
 	if int(recruit_need_time) == 0:
-		var u = UnitManager.create_unit(proposed_unit_list, belonged_faction, tile_position, self, general, recruit_need_time - int(recruit_need_time))
-		set_unit_garrison(u)
-		return u
+		if recruit_need_number > can_fight_population:
+			print("城市人口不足！")
+		else:
+			var u = UnitManager.create_unit(proposed_unit_list, belonged_faction, tile_position, self, general, recruit_need_time - int(recruit_need_time))
+			set_unit_garrison(u)
+			can_fight_population -= recruit_need_number
+			return u

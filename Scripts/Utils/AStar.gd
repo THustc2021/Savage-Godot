@@ -155,7 +155,6 @@ func find_path(from : Vector2, to : Vector2) -> Array:
 	var y = valid_dict.find_key(Vector2i(to))
 	if y == null:
 		return []
-	print(from, ",", to)
 	var path_list = self.get_id_path(x, y)
 	var path = []
 	for i in path_list:

@@ -10,7 +10,9 @@ var proposed_unit_list := []
 var proposed_unit_general = null
 
 var proposed_total_num = 0
-var default_per_max_unti_num
+var default_per_max_unit_num
+var city_max_base_number
+var city_available_num
 var unit_num_set_max_checked = false
 
 @onready var unit_num_proposed_lineedit = $"Outer/Main/Numset/Number/TextEdit"
@@ -59,8 +61,10 @@ func setup(p_c, max_base_unit_number):
 		bvcp.custom_minimum_size = Vector2(70, 150)
 		t.connect("pressed", _propose_target.bind(ut, bu, bvcp))
 		$"Outer/Main/Panel/UnitType".add_child(bvcp)
-	unit_num_proposed_slider.max_value = max_base_unit_number
-	default_per_max_unti_num = max_base_unit_number
+	city_available_num = city.can_fight_population
+	city_max_base_number = max_base_unit_number
+	if not _update_slider():	# 如果一开局就是0
+		_on_slider_value_changed(0)
 	unit_num_proposed_slider.connect("value_changed", _on_slider_value_changed)
 	unit_num_proposed_slider.value = city.can_fight_population
 	unit_num_proposed_lineedit.connect("text_changed", _on_textedit_value_changed)
@@ -108,13 +112,28 @@ func setup(p_c, max_base_unit_number):
 
 func _toggle_check_box(flag):
 	unit_num_set_max_checked = flag
+	
+func _update_slider(update_num=0):
+	city_available_num += update_num
+	if city_available_num <= 0:
+		city_available_num = 0
+	var max_value = min(city_max_base_number, city_available_num)
+	if max_value <= 0:
+		unit_num_proposed_slider.min_value = 0
+		unit_num_proposed_slider.max_value = 0
+		return false
+	else:
+		unit_num_proposed_slider.min_value = 1
+		unit_num_proposed_slider.max_value = max_value
+		return true
 
 func _analyse_unit():
-	# 隐藏自己
-	hide()
-	var baseunit_tmp = UnitManager.create_unit(proposed_unit_list, city.belonged_faction)
-	var panel = GlobalConfig.show_unit_analysis(baseunit_tmp)
-	panel.connect("tree_exiting", show)
+	if len(proposed_unit_list):
+		# 隐藏自己
+		hide()
+		var baseunit_tmp = UnitManager.create_unit(proposed_unit_list, city.belonged_faction)
+		var panel = GlobalConfig.show_unit_analysis(baseunit_tmp)
+		panel.connect("tree_exiting", show)
 
 func _propose_target(ut, bu, bvcp):
 	if _user_propose_unit != bu:
@@ -136,10 +155,10 @@ func _propose_target(ut, bu, bvcp):
 			_unit_proposed_armour.texture = _armour_avail_container.get_child(0).texture_normal
 		if len(city.avail_vehicle) > 0:
 			_unit_proposed_vehicle.texture = _vehicle_avail_container.get_child(0).texture_normal
-	else:	# 用户确认点击
+	elif unit_num_proposed_slider.value > 0:	# 用户确认点击
 		bvcp.modulate.a = 0.5
 		# 加入到队列中
-		var _max_value = default_per_max_unti_num if not unit_num_set_max_checked else unit_num_proposed_slider.value
+		var _max_value = city_max_base_number if not unit_num_set_max_checked else unit_num_proposed_slider.value
 		var _proposed_base_unit = UnitManager.create_base_unit(
 							ut, _max_value, 
 							unit_num_proposed_slider.value,
@@ -147,6 +166,8 @@ func _propose_target(ut, bu, bvcp):
 							)
 		proposed_unit_list.append(_proposed_base_unit)
 		proposed_total_num += _proposed_base_unit.current_num
+		# 更新可用人数
+		_update_slider(-unit_num_proposed_slider.value)
 		# 在右侧展示
 		var cc = VBoxContainer.new()
 		var c = _unit_proposed_portrait.duplicate()
@@ -184,6 +205,8 @@ func _cancel_this_unit(c, unit):
 	proposed_unit_list.erase(unit)
 	# 更新数量
 	proposed_total_num -= unit.current_num
+	# 更新可用人数
+	_update_slider(unit.current_num)
 	# 更新ui
 	_prepared_unit_num.text = str(len(proposed_unit_list))
 	_prepared_total_num.text = str(proposed_total_num)
@@ -200,7 +223,10 @@ func _recruit_cancelled():
 	city.city_recruit_window = null
 	
 func _on_slider_value_changed(value):
-	unit_num_proposed_lineedit["theme_override_colors/font_color"] = Color(1, 1, 1)  # 恢复为白色
+	if value > 0:
+		unit_num_proposed_lineedit["theme_override_colors/font_color"] = Color(1, 1, 1)  # 恢复为白色
+	else:
+		unit_num_proposed_lineedit["theme_override_colors/font_color"] = Color(1, 0, 0)
 	unit_num_proposed_lineedit.text = str(value)
 func _on_textedit_value_changed(new_text):
 	var value = int(new_text)
